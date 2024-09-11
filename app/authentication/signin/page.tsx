@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import {
   Button,
   Center,
@@ -12,15 +15,12 @@ import {
   TextProps,
   Title,
 } from '@mantine/core';
-import Link from 'next/link';
-import { PATH_AUTH, PATH_DASHBOARD } from '@/routes';
-import { Surface } from '@/components';
-import classes from './page.module.css';
 import { useForm } from '@mantine/form';
-import { useRouter } from 'next/navigation';
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { Surface } from '@/components';
+import NegativeNotification from '@/components/Notifications/negative-notification';
+import PositiveNotification from '@/components/Notifications/positive-notification';
+import { PATH_AUTH, PATH_DASHBOARD } from '@/routes';
+import classes from './page.module.css';
 
 const LINK_PROPS: TextProps = {
   className: classes.link,
@@ -31,48 +31,43 @@ interface LoginForm {
   password: string;
 }
 
-
-
-
 function Page() {
-  const { push } = useRouter();
-  const searchParams = useSearchParams();
-  const callBackUrl = searchParams.get("callbackUrl");
-
-
+  const router = useRouter();
   const form = useForm({
-    initialValues: { email: 'demo@email.com', password: 'Demo@123' },
-
-    // functions will be used to validate values at corresponding key
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
       password: (value) =>
-        value && value?.length < 6
-          ? 'Password must include at least 6 characters'
-          : null,
+        value && value?.length < 6 ? 'Password must include at least 6 characters' : null,
     },
   });
+
+  const handleSubmit = async (values: LoginForm) => {
+    const res = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+    if (res?.error) {
+      NegativeNotification(res.error as string);
+    }
+    if (res?.ok) {
+      PositiveNotification('Login successful');
+      router.push('/');
+    }
+  };
 
   return (
     <>
       <>
-      <title>Sign up | Next PDT</title>
+        <title>Sign up | Next PDT</title>
 
-        <meta
-          name="description"
-          content="Explore our versatile parts tracking"
-
-        />
+        <meta name="description" content="Explore our versatile parts tracking" />
       </>
-      <Title ta="center">PDT</Title>
+      <Title ta="center">NXT PDT</Title>
       <Text ta="center">Sign in to your account to continue</Text>
 
       <Surface component={Paper} className={classes.card}>
-        <form
-          onSubmit={form.onSubmit(() => {
-            push(PATH_DASHBOARD.default);
-          })}
-        >
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Email"
             placeholder="you@mantine.dev"
@@ -88,32 +83,13 @@ function Page() {
             classNames={{ label: classes.label }}
             {...form.getInputProps('password')}
           />
-          <Group justify="space-between" mt="lg">
-            <Checkbox
-              label="Remember me"
-              classNames={{ label: classes.label }}
-            />
-            <Text
-              component={Link}
-              href={PATH_AUTH.passwordReset}
-              size="sm"
-              {...LINK_PROPS}
-            >
-              Forgot password?
-            </Text>
-          </Group>
+
           <Button fullWidth mt="xl" type="submit">
             Sign in
           </Button>
         </form>
         <Center mt="md">
-          <Text
-            fz="sm"
-            ta="center"
-            component={Link}
-            href={PATH_AUTH.signup}
-            {...LINK_PROPS}
-          >
+          <Text fz="sm" ta="center" component={Link} href={PATH_AUTH.signup} {...LINK_PROPS}>
             Do not have an account yet? Create account
           </Text>
         </Center>
