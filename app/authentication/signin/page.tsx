@@ -56,7 +56,8 @@ function Page() {
   return (
     <>
       <>
-        <title>Sign in | Petra</title>
+      <title>Sign up | Next PDT</title>
+
         <meta
           name="description"
           content="Explore our versatile parts tracking"

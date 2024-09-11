@@ -27,7 +27,7 @@ const Logo = ({ href, ...others }: LogoProps) => {
           width={24}
           alt="design sparx logo"
         /> */}
-        <Text fw={700}>PETRA</Text>
+        <Text fw={700}>Next PDT</Text>
       </Group>
     </UnstyledButton>
   );

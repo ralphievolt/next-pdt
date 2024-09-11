@@ -2,9 +2,8 @@ import '@mantine/core/styles.css';
 
 import React from 'react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-// import { theme } from '../theme';
-import { myTheme } from "@/theme/"
-
+import { Notifications } from '@mantine/notifications';
+import { myTheme } from '@/theme/';
 
 export const metadata = {
   title: 'Next PDT',
@@ -23,7 +22,11 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={myTheme}>{children}</MantineProvider>
+        <MantineProvider theme={myTheme}>
+          <Notifications position="bottom-right" zIndex={1000} />
+
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );

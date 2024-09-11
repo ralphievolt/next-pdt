@@ -20,7 +20,8 @@ import { Surface } from '@/components';
 import { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Password Reset | Petra',
+  title: 'Password Reset | Next PDT',
+  
   description:"Explore our versatile parts tracking"
 
 };
@@ -31,7 +32,7 @@ function Page() {
   return (
     <>
       <>
-        <title>Password Reset | Petra</title>
+        <title>Password Reset | Next PDT</title>
         <meta
           name="description"
           content="Explore our versatile parts tracking"
