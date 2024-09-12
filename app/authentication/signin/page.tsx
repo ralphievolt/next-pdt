@@ -52,7 +52,7 @@ function Page() {
     }
     if (res?.ok) {
       PositiveNotification('Login successful');
-      router.push('/');
+      router.push('/dashboard/default');
     }
   };
 
@@ -70,7 +70,8 @@ function Page() {
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="Your Email"
+            key={form.key('email')}
             required
             classNames={{ label: classes.label }}
             {...form.getInputProps('email')}
