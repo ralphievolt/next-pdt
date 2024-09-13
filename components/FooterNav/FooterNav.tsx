@@ -62,10 +62,10 @@ const FooterNav = () => {
         c="dimmed"
         fz="sm"
         component="a"
-        href={PATH_GITHUB.org}
-        target="_blank"
+        // href={PATH_GITHUB.org}
+        // target="_blank"
       >
-        &copy;&nbsp;{new Date().getFullYear()}&nbsp;PETRA
+        &copy;&nbsp;{new Date().getFullYear()}&nbsp;PDT
       </Text>
     </Group>
   );

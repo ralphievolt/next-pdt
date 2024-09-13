@@ -45,7 +45,7 @@ function Page() {
   return (
     <>
       <>
-        <title>Petra | Dashboard</title>
+        <title>PDT | Dashboard</title>
         <meta
           name="description"
           content="fastest and easiest way to track parts in your company"

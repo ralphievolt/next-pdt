@@ -22,7 +22,7 @@ function Error404() {
   return (
     <>
       <>
-        <title>Page Not Found | Petra</title>
+        <title>Page Not Found | PDT</title>
         <meta
           name="description"
           content="Explore our versatile parts tracking"

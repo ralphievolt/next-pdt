@@ -32,7 +32,7 @@ function Pricing() {
   return (
     <>
       <>
-        <title>Blank page | Petra</title>
+        <title>Blank page | PDT</title>
         <meta
           name="description"
           content="Explore our versatile parts tracking"

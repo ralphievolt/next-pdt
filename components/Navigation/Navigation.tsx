@@ -49,19 +49,19 @@ const mockdata = [
     links: [
       { label: 'Sign In', icon: IconLogin2, link: PATH_AUTH.signin },
       { label: 'Sign Up', icon: IconUserPlus, link: PATH_AUTH.signup },
-      {
-        label: 'Reset Password',
-        icon: IconRotateRectangle,
-        link: PATH_AUTH.passwordReset,
-      },
+      // {
+      //   label: 'Reset Password',
+      //   icon: IconRotateRectangle,
+      //   link: PATH_AUTH.passwordReset,
+      // },
     ],
   },
-  {
-    title: 'Pages',
-    links: [
-      { label: 'Blank Page', icon: IconLayersSubtract, link: PATH_PAGES.blank },
-    ],
-  },
+  // {
+  //   title: 'Pages',
+  //   links: [
+  //     { label: 'Blank Page', icon: IconLayersSubtract, link: PATH_PAGES.blank },
+  //   ],
+  // },
 ];
 
 type NavigationProps = {

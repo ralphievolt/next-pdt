@@ -1,5 +1,21 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import {
+  IconBell,
+  IconCircleHalf2,
+  IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarLeftExpand,
+  IconLogout,
+  IconMessageCircle,
+  IconMoonStars,
+  IconPower,
+  IconSearch,
+  IconSunHigh,
+  IconUser,
+  IconUserEdit,
+} from '@tabler/icons-react';
+import { signOut, useSession } from 'next-auth/react';
 import {
   ActionIcon,
   Avatar,
@@ -17,17 +33,6 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core';
-import {
-  IconBell,
-  IconCircleHalf2,
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarLeftExpand,
-  IconMessageCircle,
-  IconMoonStars,
-  IconPower,
-  IconSearch,
-  IconSunHigh,
-} from '@tabler/icons-react';
 import { upperFirst, useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 
@@ -74,8 +79,7 @@ const NOTIFICATIONS = [
   {
     id: '64ee7341-f2a8-42f2-b379-48f523811d49',
     title: 'Heathcote-Flatley',
-    message:
-      'Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat.',
+    message: 'Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat.',
     icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJoSURBVDjLhZJZTxNhFIbnRq/9E/4Rf4JRE+PChV4YYjQxLglRQkgDWhGXRo2VNJWu0IWh0hY6iEvpjl1AWuoImqFCO6V0uqRrzOt8H0mxBvQkTyYnOfOcd775mPn5+WMcx12dm5v74Ha7806ns+JwOOIsyyptNttxAMy/YDwejz6ZTKJQKKDZbKLdbkOSJKTTaVgslrX/CmZnZwu1Wg3VarUjID3BbDZD5d7GE+cWRhwZ3J8SoLD+wMDEOu4ZvqFP9zXMuFyuXLlcphszmQwEQUAwGESpVILBYEC13j6Um9pUg5mZmck2Gg3wPI9isYh4PE4hNT4+DlXkIUZDw3jgH4TC24+Bj324u3CbCq6//gJmenqaClZXV6kgEolQSGk0GhxWRND7MgHGbrdTQSKRwM7ODnw+H/x+Px1Sq9UwenMHQgstyleVVEwVqtVarVaSKVS9PvD4TBisRgVqFSqzkZrINuVIF+qo+dxBMyEXCSyKIr095EDJUmI6OlzNeyhHFgZIiBPNpiFcymLje0yziqDYIxG41GdTtc7pp/CpMWCMa0eJpMJYyYXKpXKoQn4nyWcHvLvXQatVntEaV0Dv7GJCW4Ztk882MAm3i6JFHdUpAKaQk5gl1kTJJwaWty/UYOT31GsNOkwKS6e79roiYko19qdngh6HgX3Bf3mdSrwyC9yf/EukYfzs9gFEZxX+vcFffo0dmXBwvLe5vcr3QlsAbGrpwlG/hDcepNCodyAKNWxVahBEKvySVfAZ0p0+CAuKH2/OoIbmuTitVcr1SsvErj0LIqLoxGcU4ZwZjiAkwrvgZy4w7G/AXhUV4qmXai6AAAAAElFTkSuQmCC',
   },
   {
@@ -141,6 +145,8 @@ const HeaderNav = (props: HeaderNavProps) => {
   const laptop_match = useMediaQuery('(max-width: 992px)');
   const tablet_match = useMediaQuery('(max-width: 768px)');
   const mobile_match = useMediaQuery('(max-width: 425px)');
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   const messages = MESSAGES.map((m) => (
     <Menu.Item
@@ -206,40 +212,22 @@ const HeaderNav = (props: HeaderNavProps) => {
       } mode. Hope you like it`,
       styles: (theme: MantineTheme) => ({
         root: {
-          backgroundColor:
-            colorScheme === 'dark'
-              ? theme.colors.gray[7]
-              : theme.colors.gray[2],
-          borderColor:
-            colorScheme === 'dark'
-              ? theme.colors.gray[7]
-              : theme.colors.gray[2],
+          backgroundColor: colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.gray[2],
+          borderColor: colorScheme === 'dark' ? theme.colors.gray[7] : theme.colors.gray[2],
 
           '&::before': {
-            backgroundColor:
-              colorScheme === 'dark'
-                ? theme.colors.gray[2]
-                : theme.colors.gray[7],
+            backgroundColor: colorScheme === 'dark' ? theme.colors.gray[2] : theme.colors.gray[7],
           },
         },
 
         title: {
-          color:
-            colorScheme === 'dark'
-              ? theme.colors.gray[2]
-              : theme.colors.gray[7],
+          color: colorScheme === 'dark' ? theme.colors.gray[2] : theme.colors.gray[7],
         },
         description: {
-          color:
-            colorScheme === 'dark'
-              ? theme.colors.gray[2]
-              : theme.colors.gray[7],
+          color: colorScheme === 'dark' ? theme.colors.gray[2] : theme.colors.gray[7],
         },
         closeButton: {
-          color:
-            colorScheme === 'dark'
-              ? theme.colors.gray[2]
-              : theme.colors.gray[7],
+          color: colorScheme === 'dark' ? theme.colors.gray[2] : theme.colors.gray[7],
           '&:hover': {
             backgroundColor: theme.colors.red[5],
             color: theme.white,
@@ -252,22 +240,10 @@ const HeaderNav = (props: HeaderNavProps) => {
   return (
     <Group justify="space-between">
       <Group gap={0}>
-        <Tooltip label="Toggle side navigation">
           <ActionIcon visibleFrom="md" onClick={toggleDesktop}>
-            {desktopOpened ? (
-              <IconLayoutSidebarLeftCollapse />
-            ) : (
-              <IconLayoutSidebarLeftExpand />
-            )}
+            {desktopOpened ? <IconLayoutSidebarLeftCollapse /> : <IconLayoutSidebarLeftExpand />}
           </ActionIcon>
-        </Tooltip>
-        <Burger
-          opened={mobileOpened}
-          onClick={toggleMobile}
-          hiddenFrom="md"
-          size="sm"
-        />
-        {/*<Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="md" size="sm"/>*/}
+        <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="md" size="sm" />
         {!mobile_match && (
           <TextInput
             placeholder="search"
@@ -283,64 +259,49 @@ const HeaderNav = (props: HeaderNavProps) => {
             <IconSearch size={ICON_SIZE} />
           </ActionIcon>
         )}
-        <Menu shadow="lg" width={320}>
-          <Menu.Target>
-            <Indicator processing size={10} offset={6}>
-              <Tooltip label="Messages">
-                <ActionIcon size="lg" title="Nessages">
-                  <IconMessageCircle size={ICON_SIZE} />
-                </ActionIcon>
-              </Tooltip>
-            </Indicator>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Label tt="uppercase" ta="center" fw={600}>
-              {MESSAGES.length} new notifications
-            </Menu.Label>
-            {messages}
-            <Menu.Item tt="uppercase" ta="center" fw={600}>
-              Show all messages
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-        <Menu shadow="lg" width={320}>
-          <Menu.Target>
-            <Indicator processing size={10} offset={6}>
-              <Tooltip label="Notifications">
-                <ActionIcon size="lg" title="Notifications">
-                  <IconBell size={ICON_SIZE} />
-                </ActionIcon>
-              </Tooltip>
-            </Indicator>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Label tt="uppercase" ta="center" fw={600}>
-              {NOTIFICATIONS.length} new notifications
-            </Menu.Label>
-            {notifications}
-            <Menu.Item tt="uppercase" ta="center" fw={600}>
-              Show all notifications
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-        <Tooltip label="Logout">
-          <ActionIcon>
-            <IconPower size={ICON_SIZE} />
-          </ActionIcon>
-        </Tooltip>
+
         <Menu shadow="lg" width={200}>
           <Menu.Target>
-            <Tooltip label="Switch color modes">
-              <ActionIcon variant="light">
-                {colorScheme === 'auto' ? (
-                  <IconCircleHalf2 size={ICON_SIZE} />
-                ) : colorScheme === 'dark' ? (
-                  <IconMoonStars size={ICON_SIZE} />
-                ) : (
-                  <IconSunHigh size={ICON_SIZE} />
-                )}
-              </ActionIcon>
+          <Tooltip label={session?.user?.email} color="violet">
+            <ActionIcon>
+              <IconUser size={ICON_SIZE} />
+            </ActionIcon>
             </Tooltip>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Label tt="uppercase" ta="center" fw={600}>
+              Select actions
+            </Menu.Label>
+            <Menu.Item
+              leftSection={<IconUserEdit size={16} />}
+              onClick={() => console.log('changing pwd request')}
+            >
+              Change Password
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconLogout size={16} />}
+              onClick={() => {
+                signOut({ redirect: false }).then(() => {
+                  router.push('/authentication/signin');
+                });
+              }}
+            >
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+
+        <Menu shadow="lg" width={200}>
+          <Menu.Target>
+            <ActionIcon variant="light">
+              {colorScheme === 'auto' ? (
+                <IconCircleHalf2 size={ICON_SIZE} />
+              ) : colorScheme === 'dark' ? (
+                <IconMoonStars size={ICON_SIZE} />
+              ) : (
+                <IconSunHigh size={ICON_SIZE} />
+              )}
+            </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Label tt="uppercase" ta="center" fw={600}>

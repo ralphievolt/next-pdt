@@ -32,7 +32,7 @@ function Error({
   return (
     <>
       <>
-        <title>Server Error | Petra</title>
+        <title>Server Error | PDT</title>
         <meta
           name="description"
           content="Explore our versatile parts tracking"

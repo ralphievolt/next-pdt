@@ -1,15 +1,7 @@
 import Signup from '@/components/User/signup';
 
-interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-function SignupPage() {
+function ChangePwdPage() {
   return <Signup />;
 }
 
-export default SignupPage;
+export default ChangePwdPage;
