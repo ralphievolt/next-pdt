@@ -1,7 +1,9 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import { Center, Stack } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+
 import '@mantine/notifications/styles.css';
 
 type AuthProps = {
@@ -10,10 +12,17 @@ type AuthProps = {
 
 function AuthLayout({ children }: AuthProps) {
   return (
-    <>
-      <Notifications position="bottom-right" zIndex={1000} />
-      {children}
-    </>
+    <Center
+      style={{
+        height: '100vh',
+        width: '100vw',
+      }}
+    >
+      <Stack>
+        <Notifications position="bottom-right" zIndex={1000} />
+        {children}
+      </Stack>
+    </Center>
   );
 }
 

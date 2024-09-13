@@ -6,10 +6,10 @@ import { Notifications } from '@mantine/notifications';
 import { myTheme } from '@/theme/';
 
 export const metadata = {
-  title: 'Next PDT',
-  description: 'I am using Mantine with Next.js!',
+  title: 'PDT',
+  description: 'PDT version 5',
 };
-
+ 5
 export default function RootLayout({ children }: { children: any }) {
   return (
     <html lang="en">

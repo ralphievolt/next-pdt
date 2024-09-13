@@ -1,5 +1,3 @@
-"use client"
-
 import Signup from '@/components/User/signup';
 
 interface FormValues {

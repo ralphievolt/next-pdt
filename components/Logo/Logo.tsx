@@ -6,11 +6,14 @@ import {
   UnstyledButtonProps,
 } from '@mantine/core';
 import Link from 'next/link';
-import Image from 'next/image';
+import localFont from 'next/font/local';
+
 
 type LogoProps = {
   href?: string;
 } & UnstyledButtonProps;
+
+const myFont = localFont({ src: '../../assets/rubiks/Rubik-Bold.ttf' });
 
 const Logo = ({ href, ...others }: LogoProps) => {
   return (
@@ -21,13 +24,8 @@ const Logo = ({ href, ...others }: LogoProps) => {
       {...others}
     >
       <Group gap="xs">
-        {/* <Image
-          src="/logo-no-background.png"
-          height={24}
-          width={24}
-          alt="design sparx logo"
-        /> */}
-        <Text fw={700}>Next PDT</Text>
+       
+        <Text fw={700} className={myFont.className}>PDT</Text>
       </Group>
     </UnstyledButton>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import localFont from 'next/font/local';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -28,6 +29,8 @@ interface FormValues {
   password: string;
   confirmPassword: string;
 }
+
+const logoFont = localFont({ src: '../../assets/BlackOpsOne-Regular.ttf' });
 
 function Signup() {
   const LINK_PROPS: TextProps = {
@@ -81,9 +84,12 @@ function Signup() {
 
   return (
     <>
-      <title>Sign up | Next PDT</title>
+      <title>Sign up | PDT</title>
       <meta name="description" content="Explore our versatile parts tracking" />
-      <Title ta="center">Welcome!</Title>
+      <Title ta="center" c="violet">
+        Welcome!
+      </Title>
+
       <Text ta="center">Create your account to continue</Text>
 
       <Surface component={Paper} className={classes.card}>

@@ -1,5 +1,6 @@
 'use client';
 
+import localFont from 'next/font/local';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -21,6 +22,8 @@ import NegativeNotification from '@/components/Notifications/negative-notificati
 import PositiveNotification from '@/components/Notifications/positive-notification';
 import { PATH_AUTH, PATH_DASHBOARD } from '@/routes';
 import classes from './page.module.css';
+
+const logoFont = localFont({ src: '../../../assets/BlackOpsOne-Regular.ttf' });
 
 const LINK_PROPS: TextProps = {
   className: classes.link,
@@ -59,11 +62,13 @@ function Page() {
   return (
     <>
       <>
-        <title>Sign up | Next PDT</title>
+        <title>Sign up | PDT</title>
 
         <meta name="description" content="Explore our versatile parts tracking" />
       </>
-      <Title ta="center">NXT PDT</Title>
+      <Text ta="center" className={logoFont.className} color="violet" style={{fontSize:"30px"}}>
+        PDT
+      </Text>
       <Text ta="center">Sign in to your account to continue</Text>
 
       <Surface component={Paper} className={classes.card}>
