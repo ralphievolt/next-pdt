@@ -240,9 +240,9 @@ const HeaderNav = (props: HeaderNavProps) => {
   return (
     <Group justify="space-between">
       <Group gap={0}>
-          <ActionIcon visibleFrom="md" onClick={toggleDesktop}>
-            {desktopOpened ? <IconLayoutSidebarLeftCollapse /> : <IconLayoutSidebarLeftExpand />}
-          </ActionIcon>
+        <ActionIcon visibleFrom="md" onClick={toggleDesktop}>
+          {desktopOpened ? <IconLayoutSidebarLeftCollapse /> : <IconLayoutSidebarLeftExpand />}
+        </ActionIcon>
         <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="md" size="sm" />
         {!mobile_match && (
           <TextInput
@@ -262,10 +262,10 @@ const HeaderNav = (props: HeaderNavProps) => {
 
         <Menu shadow="lg" width={200}>
           <Menu.Target>
-          <Tooltip label={session?.user?.email} color="violet">
-            <ActionIcon>
-              <IconUser size={ICON_SIZE} />
-            </ActionIcon>
+            <Tooltip label={session?.user?.email} color="violet">
+              <ActionIcon>
+                <IconUser size={ICON_SIZE} />
+              </ActionIcon>
             </Tooltip>
           </Menu.Target>
           <Menu.Dropdown>
@@ -274,7 +274,7 @@ const HeaderNav = (props: HeaderNavProps) => {
             </Menu.Label>
             <Menu.Item
               leftSection={<IconUserEdit size={16} />}
-              onClick={() => console.log('changing pwd request')}
+              onClick={() => router.push('/authentication/change-password')}
             >
               Change Password
             </Menu.Item>

@@ -17,8 +17,8 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useColorScheme, useMediaQuery } from '@mantine/hooks';
-import { register } from '@/app/authentication/actions/register';
 import { changePwd } from '@/app/authentication/actions/change-pwd';
+import { register } from '@/app/authentication/actions/register';
 import { Surface } from '@/components';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
@@ -59,25 +59,24 @@ function ChangePwd() {
   });
 
   const handleSubmit = async (values: FormValues) => {
-    console.log(values);
-    try {
-      const r = await changePwd({
-        oldpassword: values.oldpassword,
-        password: values.password,
-      
-      });
-      if (r?.error) {
-        NegativeNotification(r.error);
-      } else {
-        PositiveNotification('Password changed successfully');
+    const { oldpassword, password } = values;
 
-        // return router.push('/authentication/signin');
-      }
+    try {
+      await changePwd({ oldpassword, password });
+
+      PositiveNotification('Password changed successfully');
+
+      // Uncomment the following line if you want to redirect the user after a successful password change
+      return router.push('/authentication/signin');
     } catch (error) {
-      if (error instanceof Error && error.message === 'Authentication failed!') {
-        NegativeNotification('Authentication failed!');
+      if (error instanceof Error) {
+        if (error.message === 'Authentication failed!') {
+          NegativeNotification('Authentication failed!');
+        } else {
+          NegativeNotification(error.message);
+        }
       } else {
-        NegativeNotification(error instanceof Error ? error.message : 'Failed to change password');
+        NegativeNotification('Failed to change password');
       }
     }
   };

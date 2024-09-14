@@ -13,7 +13,9 @@ type LogoProps = {
   href?: string;
 } & UnstyledButtonProps;
 
-const myFont = localFont({ src: '../../assets/rubiks/Rubik-Bold.ttf' });
+const myFont = localFont({ src: '../../assets/rubiks/Rubik-SemiBold.ttf' });
+const logoFont = localFont({ src: '../../assets/BlackOpsOne-Regular.ttf' });
+
 
 const Logo = ({ href, ...others }: LogoProps) => {
   return (
@@ -25,7 +27,7 @@ const Logo = ({ href, ...others }: LogoProps) => {
     >
       <Group gap="xs">
        
-        <Text fw={700} className={myFont.className}>PDT</Text>
+        <Text fw={700} className={logoFont.className}>PDT</Text>
       </Group>
     </UnstyledButton>
   );

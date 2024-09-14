@@ -7,9 +7,7 @@ export async function middleware(request: NextRequest) {
   const token = (await getToken({ req: request, secret: process.env.SECRET })) as JWT;
 
   if (!token) return NextResponse.redirect(new URL('/authentication/signin', request.url));
-
-  // Allow access to /blank for all roles
-
+  
   // Check the role and redirect based on the role
   switch (token.role) {
     case 'RECEPTIONIST':
@@ -53,6 +51,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Match all routes except the ones that start with /api, _next/static, _next/image, favicon.ico, and authentication routes
-    '/((?!api|_next/static|_next/image|favicon.ico|authentication/signin|authentication/signup).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|authentication/signin|authentication/signup|authentication/change-password).*)',
   ],
 };
