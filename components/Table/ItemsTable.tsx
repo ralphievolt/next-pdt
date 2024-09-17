@@ -144,6 +144,7 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, categories }) => {
         }}
         enableEditing
         enableRowActions
+        positionActionsColumn="last"
         editDisplayMode="row"
         onEditingRowSave={handleSaveRow}
       />

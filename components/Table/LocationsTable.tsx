@@ -100,6 +100,7 @@ const LocationsTable: React.FC<{ items: Item[] }> = ({ items }) => {
         enableEditing
         enableRowActions
         editDisplayMode="row"
+        positionActionsColumn="last"
         onEditingRowSave={handleSaveRow}
       />
     </Paper>

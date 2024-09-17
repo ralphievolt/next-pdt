@@ -1,13 +1,16 @@
 'use client';
 
-import { AppShell, Container, rem, useMantineTheme } from '@mantine/core';
 import { ReactNode, useState } from 'react';
+import { AppShell, Container, rem, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { Notifications } from '@mantine/notifications';
 import AppMain from '@/components/AppMain';
-import Navigation from '@/components/Navigation';
-import HeaderNav from '@/components/HeaderNav';
 import FooterNav from '@/components/FooterNav';
+import HeaderNav from '@/components/HeaderNav';
+import Navigation from '@/components/Navigation';
 import { ProvidersAuth } from '@/providers/session';
+
+import '@mantine/notifications/styles.css';
 
 type Props = {
   children: ReactNode;
@@ -52,7 +55,11 @@ function DashboardLayout({ children }: Props) {
           <Navigation onClose={toggleMobile} />
         </AppShell.Navbar>
         <AppShell.Main>
-          <AppMain>{children}</AppMain>
+          <AppMain>
+            <Notifications position="bottom-right" zIndex={1000} />
+
+            {children}
+          </AppMain>
         </AppShell.Main>
         <AppShell.Footer p="md">
           <Container fluid px="lg">

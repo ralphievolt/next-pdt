@@ -3,7 +3,6 @@
 import React, { ReactNode } from 'react';
 import { Center, Stack } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-
 import '@mantine/notifications/styles.css';
 
 type AuthProps = {
