@@ -3,13 +3,16 @@ import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import type { JWT } from 'next-auth/jwt';
 
-export async function middleware(request: NextRequest) {
-  const token = (await getToken({ req: request, secret: process.env.SECRET })) as JWT;
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const token = (await getToken({ req: request, secret: process.env.SECRET })) as JWT | null;
 
   if (!token) return NextResponse.redirect(new URL('/authentication/signin', request.url));
   
   // Check the role and redirect based on the role
   switch (token.role) {
+    case 'admin':
+      // Admin has access to all routes, so no redirection needed
+      break;
     case 'RECEPTIONIST':
       if (!request.nextUrl.pathname.startsWith('/profile')) {
         return NextResponse.redirect(new URL('/profile', request.url));
@@ -26,19 +29,16 @@ export async function middleware(request: NextRequest) {
       }
       break;
     case 'NURSE':
-      // Add the paths that the nurse can access here
       if (!request.nextUrl.pathname.startsWith('/vitals')) {
         return NextResponse.redirect(new URL('/vitals', request.url));
       }
       break;
     case 'PATHOLOGIST':
-      // Add the paths that the pathologist can access here
       if (!request.nextUrl.pathname.startsWith('/image')) {
         return NextResponse.redirect(new URL('/image', request.url));
       }
       break;
     case 'viewer':
-      // Add the paths that the nurse can access here
       if (!request.nextUrl.pathname.startsWith('/dashboard')) {
         return NextResponse.redirect(new URL('/dashboard/default', request.url));
       }
@@ -46,7 +46,10 @@ export async function middleware(request: NextRequest) {
     default:
       return NextResponse.redirect(new URL('/authentication/signin', request.url));
   }
+
+  return NextResponse.next();
 }
+
 
 export const config = {
   matcher: [

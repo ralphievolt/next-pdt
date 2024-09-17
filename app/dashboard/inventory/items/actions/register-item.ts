@@ -15,7 +15,7 @@ interface ITEM {
 
 export async function registerItem(item: ITEM): Promise<void> {
 	const client = await clientPromise;
-	const db = client.db("petra");
+	const db = client.db("model_shop");
 	const collection = db.collection("items");
 
 	try {

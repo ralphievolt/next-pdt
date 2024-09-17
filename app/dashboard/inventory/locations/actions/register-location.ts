@@ -9,7 +9,7 @@ interface LOCATION {
 
 export async function registerLocation(location: LOCATION): Promise<void> {
 	const client = await clientPromise;
-	const db = client.db("petra");
+	const db = client.db("model_shop");
 	const collection = db.collection("locations");
 
 	try {

@@ -18,7 +18,7 @@ export async function updateItemLocationAndRecordTransaction(
   let client;
   try {
     client = await clientPromise;
-    const db = client.db("petra");
+    const db = client.db("model_shop");
     const itemsCollection = db.collection("items");
     const transactionsCollection = db.collection("transactions");
 

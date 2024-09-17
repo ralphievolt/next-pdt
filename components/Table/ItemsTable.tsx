@@ -14,6 +14,10 @@ import { updateItem } from "@/app/dashboard/inventory/items/actions/update-item"
 import PositiveNotification from "../Notifications/positive-notification";
 import NegativeNotification from "../Notifications/negative-notification";
 
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css'; //if using mantine date picker features
+import 'mantine-react-table/styles.css'
+
 // Define the structure of an individual item
 interface Item {
 	_id: ObjectId;

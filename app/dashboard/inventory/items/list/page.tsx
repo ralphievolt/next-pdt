@@ -6,7 +6,7 @@ export const revalidate = 0; // Disable caching
 
 export default async function TablePage() {
 	const client = await clientPromise;
-	const db = client.db("petra");
+	const db = client.db("model_shop");
 	const itemsCollection = db.collection("items");
 	const categoriesCollection = db.collection("categories");
 

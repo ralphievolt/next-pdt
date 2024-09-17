@@ -17,7 +17,7 @@ interface ITEM {
 
 export async function updateItem(item: ITEM): Promise<void> {
 	const client = await clientPromise;
-	const db = client.db("petra");
+	const db = client.db("model_shop");
 	const locationCollection = db.collection("items");
 
 	try {

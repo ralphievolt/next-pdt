@@ -5,7 +5,7 @@ export const revalidate = 0;
 
 export default async function Form() {
   const client = await clientPromise;
-  const db = client.db('petra');
+  const db = client.db('model_shop');
   const categoriesCollection = db.collection('categories');
 
   try {

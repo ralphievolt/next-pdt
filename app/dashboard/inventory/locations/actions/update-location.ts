@@ -13,7 +13,7 @@ interface LOCATION {
 
 export async function updateLocation(location: LOCATION): Promise<void> {
 	const client = await clientPromise;
-	const db = client.db("petra");
+	const db = client.db("model_shop");
 	const locationCollection = db.collection("locations");
 
 	try {
