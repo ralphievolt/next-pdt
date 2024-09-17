@@ -1,47 +1,47 @@
-import { ActionIcon, Box, Flex, Group, ScrollArea, Text } from '@mantine/core';
 import {
-  IconBook2,
-  IconBrandAuth0,
-  IconBriefcase,
-  IconCalendar,
-  IconChartArcs3,
   IconChartBar,
-  IconChartInfographic,
-  IconExclamationCircle,
-  IconFileInvoice,
-  IconLayersSubtract,
-  IconLifebuoy,
+  IconDirection,
   IconList,
   IconListDetails,
+  IconLocationDown,
   IconLogin2,
-  IconMessages,
-  IconReceipt2,
-  IconRotateRectangle,
-  IconUserCircle,
-  IconUserCode,
+  IconPencilDown,
   IconUserPlus,
-  IconUserShield,
   IconX,
 } from '@tabler/icons-react';
+import { ActionIcon, Box, Flex, Group, ScrollArea, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { Logo, UserProfileButton } from '@/components';
+import { LinksGroup } from '@/components/Navigation/Links/Links';
+import UserProfileData from '@/public/mocks/UserProfile.json';
 import {
   PATH_ABOUT,
   PATH_APPS,
   PATH_AUTH,
   PATH_DASHBOARD,
   PATH_DOCS,
+  PATH_INVENTORY_ITEMS,
+  PATH_INVENTORY_LOCATIONS,
   PATH_PAGES,
 } from '@/routes';
-import UserProfileData from '@/public/mocks/UserProfile.json';
-import { useMediaQuery } from '@mantine/hooks';
 import classes from './Navigation.module.css';
-import { LinksGroup } from '@/components/Navigation/Links/Links';
 
 const mockdata = [
   {
-    title: 'Dashboard',
+    title: 'Model Shop',
+    links: [{ label: 'Model Shop Performance', icon: IconChartBar, link: PATH_DASHBOARD.default }],
+  },
+  {
+    title: 'Inventory',
     links: [
-      { label: 'Model Shop Performance', icon: IconChartBar, link: PATH_DASHBOARD.default },
+      { label: 'Item List', icon: IconListDetails, link: PATH_INVENTORY_ITEMS.default },
+      { label: 'Register Item', icon: IconPencilDown, link: PATH_INVENTORY_ITEMS.register },
+      { label: 'Location List', icon: IconList, link: PATH_INVENTORY_LOCATIONS.default },
+      {
+        label: 'Register Location',
+        icon: IconLocationDown,
+        link: PATH_INVENTORY_LOCATIONS.register,
+      },
     ],
   },
   {
@@ -56,12 +56,7 @@ const mockdata = [
       // },
     ],
   },
-  // {
-  //   title: 'Pages',
-  //   links: [
-  //     { label: 'Blank Page', icon: IconLayersSubtract, link: PATH_PAGES.blank },
-  //   ],
-  // },
+ 
 ];
 
 type NavigationProps = {
@@ -73,14 +68,7 @@ const Navigation = ({ onClose }: NavigationProps) => {
 
   const links = mockdata.map((m) => (
     <Box pl={0} mb="md" key={m.title}>
-      <Text
-        tt="uppercase"
-        size="xs"
-        pl="md"
-        fw={500}
-        mb="sm"
-        className={classes.linkHeader}
-      >
+      <Text tt="uppercase" size="xs" pl="md" fw={500} mb="sm" className={classes.linkHeader}>
         {m.title}
       </Text>
       {m.links.map((item) => (
@@ -101,10 +89,7 @@ const Navigation = ({ onClose }: NavigationProps) => {
     <nav className={classes.navbar}>
       <div className={classes.header}>
         <Flex justify="space-between" align="center" gap="sm">
-          <Group
-            justify="space-between"
-            style={{ flex: tablet_match ? 'auto' : 1 }}
-          >
+          <Group justify="space-between" style={{ flex: tablet_match ? 'auto' : 1 }}>
             <Logo className={classes.logo} />
           </Group>
           {tablet_match && (
@@ -121,9 +106,9 @@ const Navigation = ({ onClose }: NavigationProps) => {
 
       <div className={classes.footer}>
         <UserProfileButton
-          email={"pdtsupport@arraymarketing.com"}
+          email={'pdtsupport@arraymarketing.com'}
           image={UserProfileData.avatar}
-          name={"Contact Tech Support"}
+          name={'Contact Tech Support'}
         />
       </div>
     </nav>

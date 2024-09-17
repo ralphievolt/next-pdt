@@ -15,12 +15,24 @@ const ROOTS_ERRORS = '/error';
 const ROOTS_CHANGELOG = '/changelog';
 const ROOTS_AUTH_PROVIDERS = '/authProviders';
 const ROOTS_ABOUT = '/pages/about';
+const ROOTS_INVENTORY_ITEMS = '/inventory/items';
+const ROOTS_INVENTORY_LOCATIONS = '/inventory/locations';
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   default: path(ROOTS_DASHBOARD, '/default'),
   analytics: path(ROOTS_DASHBOARD, '/analytics'),
   saas: path(ROOTS_DASHBOARD, '/saas'),
+};
+
+export const PATH_INVENTORY_ITEMS = {
+  default: path(ROOTS_INVENTORY_ITEMS, '/list'),
+  register: path(ROOTS_INVENTORY_ITEMS, '/register'),
+};
+
+export const PATH_INVENTORY_LOCATIONS= {
+  default: path(ROOTS_INVENTORY_LOCATIONS, '/list'),
+  register: path(ROOTS_INVENTORY_LOCATIONS, '/register'),
 };
 
 export const PATH_APPS = {
@@ -30,8 +42,7 @@ export const PATH_APPS = {
   invoices: {
     all: path(ROOT_APPS, ROOTS_INVOICES + '/list'),
     sample: path(ROOT_APPS, ROOTS_INVOICES + `/details/`),
-    invoice_details: (id: string): string =>
-      path(ROOT_APPS, ROOTS_INVOICES + `/details/${id}`),
+    invoice_details: (id: string): string => path(ROOT_APPS, ROOTS_INVOICES + `/details/${id}`),
   },
   orders: path(ROOT_APPS, '/orders'),
   profile: path(ROOT_APPS, '/profile'),
@@ -59,8 +70,7 @@ export const PATH_INVOICES = {
   invoices: {
     all: path(ROOTS_INVOICES, '/list'),
     sample: path(ROOTS_INVOICES, `/details/`),
-    invoice_details: (id: string): string =>
-      path(ROOTS_INVOICES, `/details/${id}`),
+    invoice_details: (id: string): string => path(ROOTS_INVOICES, `/details/${id}`),
   },
 };
 

@@ -11,7 +11,7 @@ import {
 	Paper,
 } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
-import { registerLocation } from "@/app/dashboard/inventory/locations/actions/register-location";
+import { registerLocation } from "@/app/inventory/locations/actions/register-location";
 import PositiveNotification from "../Notifications/positive-notification";
 import NegativeNotification from "../Notifications/negative-notification";
 
@@ -42,7 +42,7 @@ const LocationRegistration: React.FC = () => {
 	return (
 		<Center>
 			<Paper withBorder shadow="md" p="xl" w="450px">
-				<Title style={{ textAlign: "center" }} order={2}>Register New Location</Title>
+				<Title style={{ textAlign: "center" }} order={3}>Register New Location</Title>
 				<Space h="md" />
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Controller

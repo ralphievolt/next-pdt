@@ -1,5 +1,6 @@
 'use client';
 
+import { IconPlus, IconRefresh } from '@tabler/icons-react';
 import {
   ActionIcon,
   Breadcrumbs,
@@ -15,9 +16,8 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core';
-import { IconPlus, IconRefresh } from '@tabler/icons-react';
-import { FilterDateMenu, Surface } from '@/components';
 import { useColorScheme } from '@mantine/hooks';
+import { FilterDateMenu, Surface } from '@/components';
 
 type PageHeaderProps = {
   title: string;
@@ -27,8 +27,7 @@ type PageHeaderProps = {
 } & PaperProps;
 
 const PageHeader = (props: PageHeaderProps) => {
-  const { withActions, breadcrumbItems, title, invoiceAction, ...others } =
-    props;
+  const { withActions, breadcrumbItems, title, invoiceAction, ...others } = props;
   const theme = useMantineTheme();
   const colorScheme = useColorScheme();
 
@@ -42,10 +41,7 @@ const PageHeader = (props: PageHeaderProps) => {
 
         '&:hover': {
           transition: 'all ease 150ms',
-          backgroundColor:
-            colorScheme === 'dark'
-              ? theme.colors.dark[5]
-              : theme.colors.gray[2],
+          backgroundColor: colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2],
           textDecoration: 'none',
         },
       },
@@ -54,21 +50,15 @@ const PageHeader = (props: PageHeaderProps) => {
 
   return (
     <>
-      <Surface
-        component={Paper}
-        style={{ backgroundColor: 'transparent' }}
-        {...others}
-      >
+      <Surface component={Paper} style={{ backgroundColor: 'transparent' }} {...others}>
         {withActions ? (
           <Flex
             justify="space-between"
             direction={{ base: 'column', sm: 'row' }}
             gap={{ base: 'sm', sm: 4 }}
           >
-            <Stack gap={4}>
-              <Title order={3}>{title}</Title>
-              <Text>Welcome back, Kelvin!</Text>
-            </Stack>
+            <Title order={3}>{title}</Title>
+
             <Flex align="center" gap="sm">
               <ActionIcon variant="subtle">
                 <IconRefresh size={16} />
@@ -85,9 +75,7 @@ const PageHeader = (props: PageHeaderProps) => {
           >
             <Stack>
               <Title order={3}>{title}</Title>
-              <Breadcrumbs {...BREADCRUMBS_PROPS}>
-                {breadcrumbItems}
-              </Breadcrumbs>
+              <Breadcrumbs {...BREADCRUMBS_PROPS}>{breadcrumbItems}</Breadcrumbs>
             </Stack>
             <Button leftSection={<IconPlus size={18} />}>New Invoice</Button>
           </Flex>

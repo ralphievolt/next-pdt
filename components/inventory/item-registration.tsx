@@ -12,7 +12,7 @@ import {
 	Select,
 } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
-import { registerItem } from "@/app/dashboard/inventory/locations/actions/register-location";
+import { registerItem } from "@/app/inventory/items/actions/register-item";
 import PositiveNotification from "../Notifications/positive-notification";
 import NegativeNotification from "../Notifications/negative-notification";
 
