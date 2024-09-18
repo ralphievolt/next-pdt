@@ -84,7 +84,8 @@ function ChangePwd() {
   return (
     <>
       <title>Change Pwd | PDT</title>
-      <meta name="description" content="Explore our versatile parts tracking" />
+      <meta name="description" content="fastest and easiest way to track parts in your company" />
+
       <Text ta="center" c="violet" size="xl">
         Change Password
       </Text>

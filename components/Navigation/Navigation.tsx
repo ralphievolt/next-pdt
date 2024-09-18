@@ -15,14 +15,10 @@ import { Logo, UserProfileButton } from '@/components';
 import { LinksGroup } from '@/components/Navigation/Links/Links';
 import UserProfileData from '@/public/mocks/UserProfile.json';
 import {
-  PATH_ABOUT,
-  PATH_APPS,
   PATH_AUTH,
   PATH_DASHBOARD,
-  PATH_DOCS,
   PATH_INVENTORY_ITEMS,
   PATH_INVENTORY_LOCATIONS,
-  PATH_PAGES,
 } from '@/routes';
 import classes from './Navigation.module.css';
 
@@ -56,7 +52,6 @@ const mockdata = [
       // },
     ],
   },
- 
 ];
 
 type NavigationProps = {

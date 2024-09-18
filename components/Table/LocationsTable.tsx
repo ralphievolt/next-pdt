@@ -35,7 +35,7 @@ const LocationsTable: React.FC<{ items: Item[] }> = ({ items }) => {
       },
       {
         accessorKey: 'locationName',
-        header: 'Name',
+        header: 'Location Name',
       },
 
       {

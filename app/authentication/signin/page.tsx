@@ -64,7 +64,8 @@ function Page() {
       <>
         <title>Sign up | PDT</title>
 
-        <meta name="description" content="Explore our versatile parts tracking" />
+        <meta name="description" content="fastest and easiest way to track parts in your company" />
+
       </>
       <Text ta="center" className={logoFont.className} color="violet" style={{fontSize:"30px"}}>
         PDT

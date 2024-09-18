@@ -11,7 +11,6 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconDots } from '@tabler/icons-react';
-import { PATH_GITHUB } from '@/routes';
 
 const FooterNav = () => {
   const theme = useMantineTheme();
@@ -62,8 +61,7 @@ const FooterNav = () => {
         c="dimmed"
         fz="sm"
         component="a"
-        // href={PATH_GITHUB.org}
-        // target="_blank"
+      
       >
         &copy;&nbsp;{new Date().getFullYear()}&nbsp;PDT
       </Text>

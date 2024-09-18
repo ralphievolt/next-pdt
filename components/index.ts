@@ -1,43 +1,29 @@
-import Logo from './Logo/Logo';
-import ToggleTheme from './ToggleTheme/ToggleTheme';
-import FilterDateMenu from '@/components/FilterDateMenu/FilterDateMenu';
-import StatsGrid from '@/components/StatsGrid/StatsGrid';
-import RevenueChart from '@/components/RevenueChart/RevenueChart';
-import SalesChart from '@/components/SalesChart/SalesChart';
-import MobileDesktopChart from '@/components/MobileDesktopChart/MobileDesktopChart';
-import ProjectsTable from '@/components/ProjectsTable/ProjectsTable';
-import StatsCard from '@/components/StatsCard/StatsCard';
-import TrafficTable from '@/components/TrafficTable/TrafficTable';
-import UserProfileCard from '@/components/UserProfileCard/UserProfileCard';
-import PricingCard from '@/components/PricingCard/PricingCard';
-import ProjectsCard from '@/components/ProjectsCard/ProjectsCard';
-import OrdersTable from '@/components/OrdersTable/OrdersTable';
-import UserProfileButton from '@/components/UserButton/UserButton';
-import ThemeDrawer from '@/components/ThemeDrawer/ThemeDrawer';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import RouterTransition from '@/components/RouterTransition/RouterTransition';
-import ProfileStatsCard from '@/components/ProfileStatsCard/ProfileStatsCard';
+import ErrorAlert from '@/components/ErrorAlert';
 import Faqs from '@/components/Faqs/Faqs';
+import FilterDateMenu from '@/components/FilterDateMenu/FilterDateMenu';
+import PageHeader from '@/components/PageHeader/PageHeader';
+import ProfileStatsCard from '@/components/ProfileStatsCard/ProfileStatsCard';
+import RouterTransition from '@/components/RouterTransition/RouterTransition';
+import SalesChart from '@/components/SalesChart/SalesChart';
+import StatsCard from '@/components/StatsCard/StatsCard';
+import StatsGrid from '@/components/StatsGrid/StatsGrid';
 import Surface from '@/components/Surface';
 import TextEditor from '@/components/TextEditor';
+import ThemeDrawer from '@/components/ThemeDrawer/ThemeDrawer';
 import UserButton from '@/components/UserButton';
-import ErrorAlert from '@/components/ErrorAlert';
+import UserProfileButton from '@/components/UserButton/UserButton';
+import UserProfileCard from '@/components/UserProfileCard/UserProfileCard';
+import Logo from './Logo/Logo';
+import ToggleTheme from './ToggleTheme/ToggleTheme';
 
 export {
   Logo,
   ToggleTheme,
   FilterDateMenu,
   StatsGrid,
-  RevenueChart,
   SalesChart,
-  MobileDesktopChart,
-  ProjectsTable,
   StatsCard,
-  TrafficTable,
   UserProfileCard,
-  PricingCard,
-  ProjectsCard,
-  OrdersTable,
   UserProfileButton,
   ThemeDrawer,
   PageHeader,

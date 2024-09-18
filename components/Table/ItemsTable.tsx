@@ -50,7 +50,7 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, categories }) => {
       },
       {
         accessorKey: 'itemName',
-        header: 'Name',
+        header: 'Item Name',
       },
       {
         accessorKey: 'itemBrand',

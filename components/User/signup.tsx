@@ -85,7 +85,8 @@ function Signup() {
   return (
     <>
       <title>Sign up | PDT</title>
-      <meta name="description" content="Explore our versatile parts tracking" />
+      <meta name="description" content="fastest and easiest way to track parts in your company" />
+
       <Title ta="center" c="violet">
         Welcome!
       </Title>

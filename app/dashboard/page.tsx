@@ -5,7 +5,6 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { Button, Container, Grid, Group, Paper, PaperProps, Stack, Text } from '@mantine/core';
 import { PageHeader } from '@/components';
 import { useFetchData } from '@/hooks';
-import { PATH_TASKS } from '@/routes';
 
 const PAPER_PROPS: PaperProps = {
   p: 'md',
@@ -31,10 +30,11 @@ function Page() {
       <>
         <title>PDT | Dashboard</title>
         <meta name="description" content="fastest and easiest way to track parts in your company" />
+        
       </>
       <Container fluid>
         <Stack gap="lg">
-          <PageHeader title="Default dashboard" withActions={true} />
+          <PageHeader title="Job Scheduling" withActions={true} />
         </Stack>
       </Container>
     </>
