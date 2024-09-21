@@ -13,6 +13,7 @@ export default async function Form() {
       .find({
         status: 'Active',
       })
+			.sort({name:1})
       .toArray();
 
     return <ItemRegistration categories={JSON.parse(JSON.stringify(categories))} />;

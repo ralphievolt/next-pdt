@@ -7,6 +7,7 @@ const ROOTS_TASKS = '/tasks';
 const ROOTS_AUTH = '/authentication';
 const ROOTS_INVENTORY_ITEMS = '/inventory/items';
 const ROOTS_INVENTORY_LOCATIONS = '/inventory/locations';
+const ROOTS_INVENTORY = '/inventory';
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
@@ -21,6 +22,10 @@ export const PATH_INVENTORY_ITEMS = {
 export const PATH_INVENTORY_LOCATIONS = {
   default: path(ROOTS_INVENTORY_LOCATIONS, '/list'),
   register: path(ROOTS_INVENTORY_LOCATIONS, '/register'),
+};
+
+export const PATH_INVENTORY_QR = {
+  default: path(ROOTS_INVENTORY, '/scan-qr'),
 };
 
 export const PATH_TASKS = {

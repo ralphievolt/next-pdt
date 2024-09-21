@@ -8,6 +8,7 @@ import {
   IconPencilDown,
   IconUserPlus,
   IconX,
+  IconQrcode
 } from '@tabler/icons-react';
 import { ActionIcon, Box, Flex, Group, ScrollArea, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -19,6 +20,7 @@ import {
   PATH_DASHBOARD,
   PATH_INVENTORY_ITEMS,
   PATH_INVENTORY_LOCATIONS,
+  PATH_INVENTORY_QR
 } from '@/routes';
 import classes from './Navigation.module.css';
 
@@ -37,6 +39,11 @@ const mockdata = [
         label: 'Register Location',
         icon: IconLocationDown,
         link: PATH_INVENTORY_LOCATIONS.register,
+      },
+      {
+        label: 'Scan QR Code',
+        icon: IconQrcode,
+        link: PATH_INVENTORY_QR.default,
       },
     ],
   },

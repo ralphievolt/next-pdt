@@ -42,6 +42,7 @@ export default async function TablePage() {
 
 		const categories = await categoriesCollection
 			.find({ status: "Active" })
+			.sort({name:1})
 			.toArray();
 
 		return (

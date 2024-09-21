@@ -129,7 +129,7 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, categories }) => {
 
   return (
     <Paper withBorder radius="md" p="md">
-      <PageHeader title="Inventory List" withActions={true} />
+      <PageHeader title="Item List" withActions={true} />
       <MantineReactTable
         columns={columns}
         data={tableData}
