@@ -25,7 +25,7 @@ type ItemRegistrationProps = {
   categories: Category[]; // Directly pass the parsed categories array
 };
 
-const ItemRegistration: React.FC<ItemRegistrationProps> = ({ categories }) => {
+const ScanQrCode: React.FC<ItemRegistrationProps> = ({ categories }) => {
   const {
     control,
     handleSubmit,
@@ -152,4 +152,4 @@ const ItemRegistration: React.FC<ItemRegistrationProps> = ({ categories }) => {
   );
 };
 
-export default ItemRegistration;
+export default ScanQrCode;
