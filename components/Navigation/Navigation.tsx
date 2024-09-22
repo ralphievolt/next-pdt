@@ -27,7 +27,9 @@ import classes from './Navigation.module.css';
 const mockdata = [
   {
     title: 'Model Shop',
-    links: [{ label: 'Model Shop Performance', icon: IconChartBar, link: PATH_DASHBOARD.default }],
+    // links: [{ label: 'Model Shop Performance', icon: IconChartBar, link: PATH_DASHBOARD.default }],
+    links: [{ label: 'Job List', icon: IconChartBar, link: PATH_DASHBOARD.root }],
+
   },
   {
     title: 'Inventory',

@@ -34,7 +34,7 @@ function Page() {
       </>
       <Container fluid>
         <Stack gap="lg">
-          <PageHeader title="Job Scheduling" withActions={true} />
+          <PageHeader title="Job List" withActions={true} />
         </Stack>
       </Container>
     </>

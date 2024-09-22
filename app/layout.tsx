@@ -1,6 +1,7 @@
 import '@mantine/core/styles.css';
 
 import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { myTheme } from '@/theme/';
@@ -9,7 +10,7 @@ export const metadata = {
   title: 'PDT',
   description: 'PDT version 5',
 };
- 5
+5;
 export default function RootLayout({ children }: { children: any }) {
   return (
     <html lang="en">
@@ -22,11 +23,13 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={myTheme}>
-          <Notifications position="bottom-right" zIndex={1000} />
+        <ChakraProvider>
+          <MantineProvider theme={myTheme}>
+            <Notifications position="bottom-right" zIndex={1000} />
 
-          {children}
-        </MantineProvider>
+            {children}
+          </MantineProvider>
+        </ChakraProvider>
       </body>
     </html>
   );

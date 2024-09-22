@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       break;
     case 'viewer':
       if (!request.nextUrl.pathname.startsWith('/dashboard')) {
-        return NextResponse.redirect(new URL('/dashboard/default', request.url));
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
       break;
     default:

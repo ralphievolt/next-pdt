@@ -28,7 +28,7 @@ export async function registerLocation(location: LOCATION): Promise<void> {
     // Insert the new item
     const result = await collection.insertOne({
       ...location,
-      status: 'active',
+      status: 'Active',
       quantity: 0,
       createdAt: new Date(),
       createdBy: session?.user?.email,
