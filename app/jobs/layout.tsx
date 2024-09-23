@@ -8,6 +8,9 @@ import Navigation from '@/components/Navigation';
 import HeaderNav from '@/components/HeaderNav';
 import FooterNav from '@/components/FooterNav';
 import { ProvidersAuth } from '@/providers/session';
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
+
 
 type Props = {
   children: ReactNode;
@@ -52,6 +55,8 @@ function DashboardLayout({ children }: Props) {
           <Navigation onClose={toggleMobile} />
         </AppShell.Navbar>
         <AppShell.Main>
+        <Notifications position="bottom-right" zIndex={1000} />
+
           <AppMain>{children}</AppMain>
         </AppShell.Main>
         {/* <AppShell.Footer p="md">

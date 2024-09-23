@@ -110,9 +110,9 @@ const Navigation = ({ onClose }: NavigationProps) => {
 
       <div className={classes.footer}>
         <UserProfileButton
-          email={'pdtsupport@arraymarketing.com'}
+          email={'riligan@arraymarketing.com'}
           image={UserProfileData.avatar}
-          name={'Contact Tech Support'}
+          name={'Contact Support'}
         />
       </div>
     </nav>

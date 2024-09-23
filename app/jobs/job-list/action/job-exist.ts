@@ -1,11 +1,11 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from '@/lib/auth';
 import { nanoid } from "nanoid";
 import { ObjectId } from "mongodb";
 
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "@/lib/mongodb-conn";
 import { revalidatePath } from "next/cache";
 
 export async function actionJobExist(job_num: any) {

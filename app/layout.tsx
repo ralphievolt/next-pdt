@@ -26,7 +26,6 @@ export default function RootLayout({ children }: { children: any }) {
         <ChakraProvider>
           <MantineProvider theme={myTheme}>
             <Notifications position="bottom-right" zIndex={1000} />
-
             {children}
           </MantineProvider>
         </ChakraProvider>

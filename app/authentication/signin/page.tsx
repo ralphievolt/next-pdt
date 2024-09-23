@@ -55,7 +55,7 @@ function Page() {
     }
     if (res?.ok) {
       PositiveNotification('Login successful');
-      router.push('/dashboard/default');
+      router.push('/dashboard');
     }
   };
 

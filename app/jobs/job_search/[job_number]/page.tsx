@@ -1,5 +1,5 @@
 import JobListTable from "@/components/job-list";
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "@/lib/mongodb-conn";
 import Error from "@/components/error-result"
 
 export default async function Home({
