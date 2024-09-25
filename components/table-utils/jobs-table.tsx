@@ -102,7 +102,7 @@ export function JobsTable<Data extends object>({
                 const x: GenericObject = row.original;
 
                 // router.push(`/job-signoff/${x._id}`);
-                router.push(`/jobs/sign-off-parts/${x._id}`);
+                router.push(`/jobs/signoff-parts/${x._id}`);
 
               }}
             >

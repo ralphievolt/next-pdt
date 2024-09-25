@@ -2,10 +2,13 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconEdit } from '@tabler/icons-react';
 import { signOut, useSession } from 'next-auth/react';
-import { Button, Divider, Menu, Paper, PaperProps, Title } from '@mantine/core';
+import { Button, Divider, Menu, Modal, Paper, PaperProps, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Surface } from '@/components';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
+import NewModal from '@/components/so-parts-list/new-modal';
+import NewResult from '@/components/so-parts-list/new-result';
 
 type PageHeaderProps = {
   title: string;
@@ -29,6 +32,7 @@ const menuItems: MenuItem[] = [
 
 const SignOffPageHeader = (props: PageHeaderProps) => {
   const { title, ...rest } = props;
+  const [opened, { open, close }] = useDisclosure(false);
   const { data: session, status } = useSession();
   const params = useParams();
   const slug = params.id;
@@ -91,11 +95,15 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
             </Menu.Dropdown>
           </Menu>
         </div>
-        <Button size="xs" style={{ marginLeft: 'auto' }}>
+        <Button size="xs" style={{ marginLeft: 'auto' }} onClick={open}>
           Add Result
         </Button>
       </Surface>
       <Divider />
+
+      <Modal opened={opened} onClose={close} title="Add Result" size="xl">
+        <NewModal />
+      </Modal>
     </>
   );
 };

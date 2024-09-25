@@ -52,9 +52,7 @@ const HeaderNav = (props: HeaderNavProps) => {
   const mobile_match = useMediaQuery('(max-width: 425px)');
   const { data: session, status } = useSession();
   const router = useRouter();
-  const email = 'riligan@arraymarketing.com';
-  const name = email.split('@')[0];
-
+ 
   return (
     <Group justify="space-between">
       <Group gap={0}>
@@ -77,7 +75,7 @@ const HeaderNav = (props: HeaderNavProps) => {
             <IconSearch size={ICON_SIZE} />
           </ActionIcon>
         )}
-        <Text c="violet">{name}</Text>
+        <Text c="violet">{session?.user?.name}</Text>
         <Menu shadow="lg" width={200}>
           <Menu.Target>
             <ActionIcon>
