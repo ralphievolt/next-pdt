@@ -83,7 +83,7 @@ function NewModal() {
             />
           </Grid.Col>
         </Grid>
-        <Grid justify="center" mt="lg">
+        <Grid justify="center" mt="lg" mb="lg">
           <Button leftSection={<IconDeviceFloppy size={16} />} type="submit">
             Add Result
           </Button>

@@ -1,25 +1,8 @@
-"use client"
-import { ActionIcon, createTheme, Loader ,MantineColorsTuple} from '@mantine/core';
+'use client';
 
-const darkerGreen: MantineColorsTuple = [
-  '#0b3d0b',
-  '#0e4d0e',
-  '#116011',
-  '#147214',
-  '#178417',
-  '#1a961a',
-  '#1da81d',
-  '#20ba20',
-  '#23cc23',
-  '#26de26'
-];
-
-
+import { ActionIcon, createTheme, Loader } from '@mantine/core';
 
 export const myTheme = createTheme({
-  // colors: {
-  //   darkerGreen, // Add your custom color to the theme's colors
-  // },
   primaryColor: 'violet',
   defaultRadius: 'md',
   focusRing: 'always',

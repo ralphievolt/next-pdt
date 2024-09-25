@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb-conn";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from 'next-auth';
+
 import { authOptions } from '@/lib/auth';
 import { nanoid } from "nanoid";
 
@@ -13,14 +14,12 @@ export async function POST(
   const client = await clientPromise;
   const db = client.db("model_shop");
   const data = await request.json();
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null;
+
 
   try {
-    if (
-      !session &&
-      (session?.user?.role !== "user" || session?.user?.role !== "admin")
-    ) {
-      throw "Unauthorised user";
+    if ((!session && !session) || (session.user.role !== 'user' && session.user.role !== 'admin')) {
+      throw new Error(`Unauthorised user`);
     }
     let job;
     let date_started = ["Approved", "Rejected", "Pre-Inspected"].includes(

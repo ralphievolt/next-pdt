@@ -23,11 +23,8 @@ export async function uploadJobPartsNew(
   const db = client.db("model_shop");
 
   try {
-    if (
-      !session &&
-      (session?.user?.role !== "user" || session?.user?.role !== "admin")
-    ) {
-      throw "Unauthorised user";
+    if ((!session && !session) || (session.user.role !== 'user' && session.user.role !== 'admin')) {
+      throw new Error(`Unauthorised user`);
     }
 
     const job = await db

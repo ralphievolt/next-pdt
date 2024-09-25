@@ -57,7 +57,6 @@ function DashboardLayout({ children }: Props) {
         <AppShell.Main>
           <AppMain>
             <Notifications position="bottom-right" zIndex={1000} />
-
             {children}
           </AppMain>
         </AppShell.Main>

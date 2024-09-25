@@ -8,4 +8,11 @@
   @mixin dark {
     background-color: var(--mantine-color-dark-9);
   }
+
+  @media (max-width: 768px) {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+  }
 }
