@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 import { Tag, Text, useDisclosure } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
-import { Box, Stack } from '@mantine/core';
 
 import '@mantine/dates/styles.css'; //if using mantine date picker features
 import 'mantine-react-table/styles.css';

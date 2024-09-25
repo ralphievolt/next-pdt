@@ -2,9 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { OptionBase } from "chakra-react-select";
-import { useAtom } from "jotai";
 import { useSession } from "next-auth/react";
-import { stateAtoms } from "@/stores";
 import { useForm, Controller } from "react-hook-form";
 import React, { useTransition, useState } from "react";
 
@@ -36,8 +34,6 @@ interface selectOption extends OptionBase {
 export default function AddJobForm() {
   const router = useRouter();
   const toast = useToast();
-  const [existing, setExisting] = useState(true);
-  const [stateOptions] = useAtom<readonly selectOption[]>(stateAtoms);
   const {
     control,
     handleSubmit,

@@ -8,7 +8,6 @@ import SalesChart from '@/components/SalesChart/SalesChart';
 import StatsCard from '@/components/StatsCard/StatsCard';
 import StatsGrid from '@/components/StatsGrid/StatsGrid';
 import Surface from '@/components/Surface';
-import TextEditor from '@/components/TextEditor';
 import ThemeDrawer from '@/components/ThemeDrawer/ThemeDrawer';
 import UserButton from '@/components/UserButton';
 import UserProfileButton from '@/components/UserButton/UserButton';
@@ -31,7 +30,6 @@ export {
   ProfileStatsCard,
   Faqs,
   Surface,
-  TextEditor,
   UserButton,
   ErrorAlert,
 };

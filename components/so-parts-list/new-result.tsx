@@ -1,311 +1,180 @@
-"use client";
+'use client';
 
-import { useForm, Controller } from "react-hook-form";
-import React from "react";
-import { CreatableSelect, OptionBase } from "chakra-react-select";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useAtom } from "jotai";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Stack,
-  Textarea,
-  useToast,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import React from 'react';
+import { useParams } from 'next/navigation';
+import { IconDeviceFloppy } from '@tabler/icons-react';
+import { useAtomValue } from 'jotai';
+import { signOut, useSession } from 'next-auth/react';
+import { Button, Grid, Select, Stack, Textarea, TextInput } from '@mantine/core';
+import { isNotEmpty, useForm } from '@mantine/form';
+import NegativeNotification from '@/components/Notifications/negative-notification';
+import PositiveNotification from '@/components/Notifications/positive-notification';
+import { actionFormAtom, issueFormAtom, partFormAtom, statusAtoms } from '@/stores';
+import { ActionSelect } from './combox-actions';
+import { IssueSelect } from './combox-issues';
+import { PartSelect } from './combox-parts';
 
-import {
-  partsAtoms,
-  responsibleAtoms,
-  actionsAtoms,
-  issuesAtoms,
-  statusAtoms,
-} from "@/stores";
+function NewResult() {
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      shelf: '',
+      status: '',
+      detail: '',
+      responsible: '',
+      assort: '',
+    },
+    validate: {
+      shelf: isNotEmpty('Shelf cannot be empty'),
+      status: isNotEmpty('Status cannot be empty'),
+      assort: isNotEmpty('Assortment cannot be empty'),
+      responsible: (value, values) => {
+        if (issueSelected !== '') {
+          return isNotEmpty('Responsible cannot be empty')(value);
+        }
+      },
+    },
+  });
 
-interface IFormInputs {
-  shelf: string;
-  part: selectOption;
-  status: string;
-  issue: selectOption;
-  detail: string;
-  action: selectOption;
-  responsible: selectOption;
-  assort: string;
+  const { data: session, status } = useSession();
+  const params = useParams();
+  const slug = params.id;
+  const partSelected = useAtomValue(partFormAtom);
+  const actionSelected = useAtomValue(actionFormAtom);
+  const issueSelected = useAtomValue(issueFormAtom);
+  const statusSelection = useAtomValue(statusAtoms);
+  const statusArr = statusSelection.map((item) => item.value);
+  const [loading, setLoading] = React.useState(false);
 
-}
-
-interface selectOption extends OptionBase {
-  label: string;
-  value: string;
-}
-
-export default function EntryForm(props: any) {
-  const router = useRouter();
-  const toast = useToast();
-  const [partsOptions] = useAtom<readonly selectOption[]>(partsAtoms);
-  const [actionsOptions] = useAtom<readonly selectOption[]>(actionsAtoms);
-  const [issuesOptions] = useAtom<readonly selectOption[]>(issuesAtoms);
-  const [statusOptions] = useAtom<readonly selectOption[]>(statusAtoms);
-  const [responsibleOptions] =
-    useAtom<readonly selectOption[]>(responsibleAtoms);
-  const {
-    control,
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<IFormInputs>();
-
-  const [status, setStatus] = React.useState<boolean>(true);
-  const [adding, setAdding] = React.useState(false);
-  const textField = register("status", { required: true });
-  const { data: session } = useSession();
-
-
-
-  const addNewResult = async (data: any) => {
-    if (session?.user?.role === "viewer") {
-      toast({
-        title: "UnAuthorised!",
-        description: "Your access is view only",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        containerStyle: {
-          color: "purple.500",
-        },
-      });
-
+  const handleSubmit = async (values: typeof form.values) => {
+    if (partSelected === '' || partSelected === null) {
+      NegativeNotification('Part name required!');
       return;
     }
-    
-    setAdding(true);
 
-    const res = await fetch(`${props.job_id}/api/new-result`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status === 201) {
-      toast({
-        title: "New Result",
-        description: "Result successfully added.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        containerStyle: {
-          color: "purple.500",
+    if (values.status === 'Rejected' && (issueSelected === '' || actionSelected === '')) {
+      NegativeNotification('Issue and Action entry required. Please try again');
+      return;
+    }
+
+    const result = {
+      ...values,
+      shelf: values.shelf.toUpperCase(),
+      part: partSelected,
+      issue: issueSelected,
+      action: actionSelected,
+    };
+
+    if (session?.user?.role === 'viewer') {
+      NegativeNotification('Access denied');
+      return;
+    }
+    try {
+      const res = await fetch(`${slug}/api/new-result`, {
+        method: 'POST',
+        body: JSON.stringify(result),
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
         },
       });
-      setAdding(false);
-      router.refresh();
-    } else if (res.status === 500) {
-      toast({
-        title: "Result Error",
-        description: "Error in adding your new result. Please try again!",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        containerStyle: {
-          color: "purple.500",
+      if (!res.ok) {
+        throw new Error('Failed to add new result');
+      }
+
+      PositiveNotification('New result added successfully! ');
+    } catch (error) {
+      NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
+    }
+  };
+
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const value = event.currentTarget.getAttribute('data-value');
+    if (session?.user?.role === 'viewer') {
+      NegativeNotification('Access denied');
+      return;
+    }
+    try {
+      const res = await fetch(`${slug}/api/new-result`, {
+        method: 'POST',
+        body: JSON.stringify(value),
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
         },
       });
-      setAdding(false);
+      if (!res.ok) {
+        throw new Error('Failed to add new result');
+      }
+
+      PositiveNotification('New result added successfully! ');
+    } catch (error) {
+      NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
     }
   };
 
   return (
-    <VStack
-      as="form"
-      spacing={8}
-      w="100%"
-      bg={useColorModeValue("white", "gray.700")}
-      rounded="lg"
-      boxShadow="lg"
-      p={{ base: 5, sm: 10 }}
-      onSubmit={handleSubmit((data: IFormInputs) => {
-        let result = {
-          ...data,
-          shelf: data.shelf.toUpperCase(),
-          part: data.part.value,
-          issue: status ? data.issue.value : "",
-          action: status ? data.action.value : "",
-          responsible: status ? data.responsible.value : "",
-        };
-
-        addNewResult(result);
-      })}
-    >
-      <VStack spacing={4} w="100%">
-        <Stack w="100%" spacing={3} direction={{ base: "column", md: "row" }}>
-          <FormControl id="shelf">
-            <FormLabel>Shelf</FormLabel>
-            <Input
-              type="text"
-              placeholder="Shelf"
-              variant="filled"
-              rounded="md"
-              {...register("shelf", { required: true })}
-            />
-          </FormControl>
-          <Controller
-            control={control}
-            name="part"
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, ref } }) => (
-              <FormControl id="part">
-                <FormLabel>Parts</FormLabel>
-
-                <CreatableSelect
-                  isClearable
-                  options={partsOptions}
-                  variant="filled"
-                  ref={ref}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              </FormControl>
-            )}
+    <>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <Grid>
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <TextInput label="Shelf" placeholder="shelf" {...form.getInputProps('shelf')} />
+            </Grid.Col>
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <Select
+                label="Status"
+                placeholder="select status"
+                data={statusArr}
+                {...form.getInputProps('status')}
+              />
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col span={{ base: 5, md: 5 }}>
+              <PartSelect />
+            </Grid.Col>
+            <Grid.Col span={{ base: 7, md: 7 }}>
+              <IssueSelect />
+            </Grid.Col>
+          </Grid>
+          <Textarea
+            label="Detail"
+            placeholder="detail"
+            autosize
+            {...form.getInputProps('detail')}
           />
-          <FormControl id="status">
-            <FormLabel>Status</FormLabel>
-            <Select
-              placeholder="Select..."
-              variant="filled"
-              {...textField}
-              onChange={(e) => {
-                textField.onChange(e);
-                const specialResult = [
-                  "Approved",
-                  "Cancelled",
-                  "Not Client Approved",
-                  "Not Inspected",
-                  "Not Stage",
-                  "Parts Collected",
-                  "Pre-Inspected",
-                  "Staged",
-                ];
-                const selectVal = e.currentTarget.value;
-
-                specialResult.includes(selectVal)
-                  ? setStatus(false)
-                  : setStatus(true);
-              }}
+          <Grid>
+            <Grid.Col span={{ base: 7, md: 6 }}>
+              <ActionSelect />
+            </Grid.Col>
+            <Grid.Col span={{ base: 5, md: 6 }}>
+              <TextInput
+                label="Responsible"
+                placeholder="responsible"
+                {...form.getInputProps('responsible')}
+              />
+            </Grid.Col>
+          </Grid>
+          <Grid>
+            <Grid.Col span={{ base: 7, md: 6 }}>
+              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
+            </Grid.Col>
+          </Grid>
+          <Grid justify="center" mt="lg" mb="lg">
+            <Button
+              leftSection={<IconDeviceFloppy size={16} />}
+              type="submit"
+              loading={loading}
+              loaderProps={{ type: 'bars' }}
             >
-              {statusOptions.map((item) => (
-                <option value={item.value} key={item.value}>
-                  {item.label}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
+              Add Result
+            </Button>
+          </Grid>
         </Stack>
-        <Stack w="100%" spacing={3} direction={{ base: "column", md: "row" }}>
-          <Controller
-            control={control}
-            name="issue"
-            rules={{ required: status }}
-            render={({ field: { onChange, onBlur, ref } }) => (
-              <FormControl id="issue" w={{ md: "100%", lg: "70%" }}>
-                <FormLabel>Issue</FormLabel>
-                <CreatableSelect
-                  isClearable
-                  options={issuesOptions}
-                  variant="filled"
-                  ref={ref}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              </FormControl>
-            )}
-          />
-
-          <FormControl id="detail">
-            <FormLabel>Detail</FormLabel>
-            <Textarea
-              size="sm"
-              placeholder="Enter detail here"
-              rounded="md"
-              variant="filled"
-              {...register("detail", { required: status })}
-            />
-          </FormControl>
-        </Stack>
-        <Stack w="100%" spacing={3} direction={{ base: "column", md: "row" }}>
-          <Controller
-            control={control}
-            name="action"
-            rules={{ required: status }}
-            render={({ field: { onChange, onBlur, ref } }) => (
-              <FormControl id="action">
-                <FormLabel>Action Needed</FormLabel>
-
-                <CreatableSelect
-                  isClearable
-                  options={actionsOptions}
-                  variant="filled"
-                  ref={ref}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            control={control}
-            name="responsible"
-            rules={{ required: status }}
-            render={({ field: { onChange, onBlur, ref } }) => (
-              <FormControl id="responsible">
-                <FormLabel>Responsible</FormLabel>
-                <CreatableSelect
-                  isClearable
-                  options={responsibleOptions}
-                  variant="filled"
-                  ref={ref}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                />
-              </FormControl>
-            )}
-          />
-           <FormControl id="assort">
-            <FormLabel>Assort</FormLabel>
-            <Input
-              type="text"
-              placeholder="Assort"
-              variant="filled"
-              rounded="md"
-              {...register("assort", { required: false })}
-            />
-          </FormControl>
-        </Stack>
-      </VStack>
-      <VStack w="100%">
-        <Button
-          bg="purple.400"
-          color="white"
-          _hover={{
-            bg: "purple.500",
-          }}
-          rounded="md"
-          w={{ base: "100%", md: "max-content" }}
-          type="submit"
-          isLoading={adding}
-          loadingText="Adding"
-        >
-          Add Result
-        </Button>
-      </VStack>
-    </VStack>
+      </form>
+    </>
   );
 }
+
+export default NewResult;

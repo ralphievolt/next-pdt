@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { ObjectId } from "mongodb";
 import clientPromise from "@/lib/mongodb-conn";
 import { getServerSession, Session } from 'next-auth';
-
+import { revalidatePath } from 'next/cache';
 import { authOptions } from '@/lib/auth';
 
 export async function POST(
@@ -79,6 +79,7 @@ export async function POST(
           },
         },
       ]);
+      revalidatePath(`/jobs/${id}`); 
       return NextResponse.json(job, { status: 201 });
     }
 
@@ -128,6 +129,7 @@ export async function POST(
       },
     ]);
 
+    revalidatePath(`/jobs/${id}`); 
     return NextResponse.json(job, { status: 201 });
   } catch (error) {
     return NextResponse.json(

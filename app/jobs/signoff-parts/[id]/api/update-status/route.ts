@@ -14,7 +14,6 @@ export async function POST(request: Request, { params }: { params: { id: string 
   const session = (await getServerSession(authOptions)) as Session | null;
 
   try {
-    
     if ((!session && !session) || (session.user.role !== 'user' && session.user.role !== 'admin')) {
       throw new Error(`Unauthorised user`);
     }
@@ -113,6 +112,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
       },
     ]);
 
+    return NextResponse.json(job, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

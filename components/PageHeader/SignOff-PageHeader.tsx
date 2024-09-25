@@ -1,14 +1,15 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconEdit } from '@tabler/icons-react';
+import { useAtomValue } from 'jotai';
 import { signOut, useSession } from 'next-auth/react';
 import { Button, Divider, Menu, Modal, Paper, PaperProps, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Surface } from '@/components';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
-import NewModal from '@/components/so-parts-list/new-modal';
 import NewResult from '@/components/so-parts-list/new-result';
+import { statesAtom } from '@/stores';
 
 type PageHeaderProps = {
   title: string;
@@ -19,17 +20,6 @@ interface MenuItem {
   value: string;
 }
 
-const menuItems: MenuItem[] = [
-  { label: 'Ready for Staging', value: 'Ready for Staging' },
-  { label: 'Staged', value: 'Staged' },
-  { label: 'Awaiting SS', value: 'Awaiting SS' },
-  { label: 'Scheduled', value: 'Scheduled' },
-  { label: 'In-progress', value: 'In-progress' },
-  { label: 'Signed-off', value: 'Signed-off' },
-  { label: 'Delivered', value: 'Delivered' },
-  { label: 'Production Recall', value: 'Production Recall' },
-];
-
 const SignOffPageHeader = (props: PageHeaderProps) => {
   const { title, ...rest } = props;
   const [opened, { open, close }] = useDisclosure(false);
@@ -37,8 +27,12 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
   const params = useParams();
   const slug = params.id;
 
+  const states = useAtomValue(statesAtom);
+  const menuItems: MenuItem[] = states;
+
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const value = event.currentTarget.getAttribute('data-value');
+
     if (session?.user?.role === 'viewer') {
       NegativeNotification('Access denied');
       return;
@@ -101,8 +95,8 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
       </Surface>
       <Divider />
 
-      <Modal opened={opened} onClose={close} title="Add Result" size="xl">
-        <NewModal />
+      <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
+        <NewResult />
       </Modal>
     </>
   );

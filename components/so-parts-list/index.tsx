@@ -46,28 +46,6 @@ export default function ResultForm(props: any) {
     setCompletion(Math.round((approved.length / totalParts.length) * 100));
 
     results.map(({ shelf, part, status, issue, detail, action, responsible, entry_by }: any) => {
-      const rowDetails = {
-        Created: dayjs().format('MM/DD/YYYY h:mm A'),
-        'Requested By:': entry_by,
-        Shift: 'Day Shift',
-        'QA Inspector': 'Vanitha',
-        'Inspection Area / Work Center': 'Model Shop',
-        'Sub Process': 'Model shop Sign off',
-        'Work Station': '',
-        'Job Number': props.job[0].job_number,
-        'Project Name / Customer': props.job[0].brand,
-        'Part Number / Item': part,
-        Description: shelf,
-        Source: 'MASTER SIGN OFF',
-        'Qality Status': status,
-        'Inspected Qty': 1,
-        'Released Quantity': status === 'Approved' ? 1 : 0,
-        'Rejected Quantity': status === 'Approved' ? 0 : 1,
-        'Defect Code': '',
-        'Originated In Other Process': '',
-        'Work Center Origin': '',
-        Comments: `${detail} || ${action}`,
-      };
     });
   }, []);
 
