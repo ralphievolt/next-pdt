@@ -1,41 +1,35 @@
-import { NextResponse } from "next/server";
-import { nanoid } from "nanoid";
-import { ObjectId } from "mongodb";
-import clientPromise from "@/lib/mongodb-conn";
-import { getServerSession, Session } from 'next-auth';
 import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
+import { nanoid } from 'nanoid';
+import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import clientPromise from '@/lib/mongodb-conn';
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: Request, { params }: { params: { id: string } }) {
   const id = params.id;
   const client = await clientPromise;
-  const db = client.db("model_shop");
+  const db = client.db('model_shop');
   const data = await request.json();
   const session = (await getServerSession(authOptions)) as Session | null;
-
 
   try {
     if ((!session && !session) || (session.user.role !== 'user' && session.user.role !== 'admin')) {
       throw new Error(`Unauthorised user`);
     }
 
-    let date_started = ["Approved", "Rejected", "Pre-Inspected"].includes(
-      data.status
-    )
+    let date_started = ['Approved', 'Rejected', 'Pre-Inspected'].includes(data.status)
       ? true
       : false;
 
     let job;
     if (date_started) {
-      job = await db.collection("jobs").updateOne({ _id: new ObjectId(id) }, [
+      job = await db.collection('jobs').updateOne({ _id: new ObjectId(id) }, [
         {
           $set: {
             results: {
               $concatArrays: [
-                "$results",
+                '$results',
                 [
                   {
                     ...data,
@@ -44,9 +38,8 @@ export async function POST(
                     entry_by: session?.user?.name,
                     round: 1,
                     date_started: new Date(),
-                    issue_status: data.status === "Rejected" ? "Open" : "",
-                    issue_status_opened:
-                      data.status === "Rejected" ? new Date() : null,
+                    issue_status: data.status === 'Rejected' ? 'Open' : '',
+                    issue_status_opened: data.status === 'Rejected' ? new Date() : null,
                   },
                 ],
               ],
@@ -58,11 +51,11 @@ export async function POST(
           $set: {
             history: {
               $concatArrays: [
-                "$history",
+                '$history',
                 [
                   {
                     timestamp: new Date(),
-                    transaction: "Add New Result",
+                    transaction: 'Add New Result',
                     part: `${data.shelf} - ${data.part}`,
                     status: data.status,
                     by: session?.user?.name,
@@ -79,16 +72,16 @@ export async function POST(
           },
         },
       ]);
-      revalidatePath(`/jobs/${id}`); 
+      revalidatePath(`/jobs/signoff-parts/${id}`, 'page');
       return NextResponse.json(job, { status: 201 });
     }
 
-    job = await db.collection("jobs").updateOne({ _id: new ObjectId(id) }, [
+    job = await db.collection('jobs').updateOne({ _id: new ObjectId(id) }, [
       {
         $set: {
           results: {
             $concatArrays: [
-              "$results",
+              '$results',
               [
                 {
                   ...data,
@@ -107,11 +100,11 @@ export async function POST(
         $set: {
           history: {
             $concatArrays: [
-              "$history",
+              '$history',
               [
                 {
                   timestamp: new Date(),
-                  transaction: "Add New Result",
+                  transaction: 'Add New Result',
                   part: `${data.shelf} - ${data.part}`,
                   status: data.status,
                   by: session?.user?.name,
@@ -129,12 +122,9 @@ export async function POST(
       },
     ]);
 
-    revalidatePath(`/jobs/${id}`); 
+    revalidatePath(`/jobs/signoff-parts/${id}`);
     return NextResponse.json(job, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Error in adding new result" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error in adding new result' }, { status: 500 });
   }
 }

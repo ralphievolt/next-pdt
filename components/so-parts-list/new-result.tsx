@@ -10,9 +10,7 @@ import { isNotEmpty, useForm } from '@mantine/form';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
 import { actionFormAtom, issueFormAtom, partFormAtom, statusAtoms } from '@/stores';
-import { ActionSelect } from './combox-actions';
-import { IssueSelect } from './combox-issues';
-import { PartSelect } from './combox-parts';
+import { itemsSelect } from './combox-items';
 
 function NewResult() {
   const form = useForm({
@@ -70,6 +68,7 @@ function NewResult() {
       return;
     }
     try {
+      setLoading(true);
       const res = await fetch(`${slug}/api/new-result`, {
         method: 'POST',
         body: JSON.stringify(result),
@@ -80,36 +79,14 @@ function NewResult() {
       });
       if (!res.ok) {
         throw new Error('Failed to add new result');
+        setLoading(false);
       }
 
       PositiveNotification('New result added successfully! ');
+      setLoading(false);
     } catch (error) {
       NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
-    }
-  };
-
-  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    const value = event.currentTarget.getAttribute('data-value');
-    if (session?.user?.role === 'viewer') {
-      NegativeNotification('Access denied');
-      return;
-    }
-    try {
-      const res = await fetch(`${slug}/api/new-result`, {
-        method: 'POST',
-        body: JSON.stringify(value),
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!res.ok) {
-        throw new Error('Failed to add new result');
-      }
-
-      PositiveNotification('New result added successfully! ');
-    } catch (error) {
-      NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
+      setLoading(false);
     }
   };
 
@@ -131,12 +108,8 @@ function NewResult() {
             </Grid.Col>
           </Grid>
           <Grid>
-            <Grid.Col span={{ base: 5, md: 5 }}>
-              <PartSelect />
-            </Grid.Col>
-            <Grid.Col span={{ base: 7, md: 7 }}>
-              <IssueSelect />
-            </Grid.Col>
+            <Grid.Col span={{ base: 5, md: 5 }}>{itemsSelect('part')}</Grid.Col>
+            <Grid.Col span={{ base: 7, md: 7 }}>{itemsSelect('issue')}</Grid.Col>
           </Grid>
           <Textarea
             label="Detail"
@@ -145,9 +118,7 @@ function NewResult() {
             {...form.getInputProps('detail')}
           />
           <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>
-              <ActionSelect />
-            </Grid.Col>
+            <Grid.Col span={{ base: 7, md: 6 }}>{itemsSelect('action')}</Grid.Col>
             <Grid.Col span={{ base: 5, md: 6 }}>
               <TextInput
                 label="Responsible"
