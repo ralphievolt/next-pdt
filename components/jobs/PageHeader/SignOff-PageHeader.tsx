@@ -1,14 +1,26 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
-import { IconEdit } from '@tabler/icons-react';
+import { IconEdit, IconHexagonLetterR, IconPencilPlus } from '@tabler/icons-react';
 import { useAtomValue } from 'jotai';
-import { signOut, useSession } from 'next-auth/react';
-import { Button, Divider, Menu, Modal, Paper, PaperProps, Title } from '@mantine/core';
+import { useSession } from 'next-auth/react';
+import {
+  ActionIcon,
+  Button,
+  Divider,
+  Menu,
+  Modal,
+  NumberInput,
+  Paper,
+  PaperProps,
+  Text,
+  Title,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Surface } from '@/components';
+import NewResult from '@/components/jobs/so-parts-list/new-result';
+import UpdateResult from '@/components/jobs/so-parts-list/update-result';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
-import NewResult from '@/components/so-parts-list/new-result';
 import { statesAtom } from '@/stores';
 
 type PageHeaderProps = {
@@ -89,14 +101,28 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
             </Menu.Dropdown>
           </Menu>
         </div>
-        <Button size="xs" style={{ marginLeft: 'auto' }} onClick={open}>
-          Add Result
-        </Button>
+
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+          <NumberInput
+            allowNegative={false}
+            hideControls
+            maxLength={2}
+            style={{ width: '80px' }}
+            rightSection={<IconHexagonLetterR />}
+          />
+          <ActionIcon size="lg" style={{ marginLeft: '10px' }} onClick={open}>
+            <IconPencilPlus size={24} />
+          </ActionIcon>
+        </div>
       </Surface>
       <Divider />
 
-      <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
+      {/* <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
         <NewResult />
+      </Modal> */}
+
+      <Modal opened={opened} onClose={close} title="Update Result" size="xl" yOffset="1.5vh">
+        <UpdateResult /> 
       </Modal>
     </>
   );

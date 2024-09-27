@@ -1,4 +1,4 @@
-import JobListTable from "@/components/job-list"
+import JobListTable from "@/components/jobs/job-list"
 import clientPromise from "@/lib/mongodb-conn";
 import Error from "@/components/error-result"
 

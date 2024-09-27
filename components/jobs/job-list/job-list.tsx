@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { JobsTable } from "../table-utils/jobs-table";
-import { JobsListProps, JobsList } from "../Jobs.types";
+import { JobsTable } from "../../table-utils/jobs-table";
+import { JobsListProps, JobsList } from "../../Jobs.types";
 import dayjs from "dayjs";
 import { Tag } from "@chakra-ui/react";
 

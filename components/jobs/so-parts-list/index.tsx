@@ -3,7 +3,7 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import { Paper } from '@mantine/core';
-import SignOffPageHeader from '@/components/PageHeader/SignOff-PageHeader';
+import SignOffPageHeader from '@/components/jobs/PageHeader/SignOff-PageHeader';
 import SignOffTable from '@/components/Table/SignOffTable';
 
 export default function ResultForm(props: any) {

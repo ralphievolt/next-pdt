@@ -51,8 +51,7 @@ export default function WelcomePage() {
           </Text>
           <br />
           <Text fontSize="2xl" mt={3} className={lightFont.className}>
-            Keep track of your jobs and never miss an update in real time. Keep track of your jobs
-            and never miss out on updates in real time.
+            Keep track of your jobs and never miss an update in real time. 
           </Text>
           <Button
             variant="filled"

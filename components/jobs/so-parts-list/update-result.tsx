@@ -4,7 +4,7 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconDeviceFloppy } from '@tabler/icons-react';
 import { useAtomValue } from 'jotai';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Button, Grid, Select, Stack, Textarea, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import NegativeNotification from '@/components/Notifications/negative-notification';
@@ -12,7 +12,7 @@ import PositiveNotification from '@/components/Notifications/positive-notificati
 import { actionFormAtom, issueFormAtom, partFormAtom, statusAtoms } from '@/stores';
 import { itemsSelect } from './combox-items';
 
-function NewResult() {
+export default function UpdateResult() {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -21,6 +21,7 @@ function NewResult() {
       detail: '',
       responsible: '',
       assort: '',
+      issue_status: null,
     },
     validate: {
       shelf: isNotEmpty('Shelf cannot be empty'),
@@ -95,21 +96,16 @@ function NewResult() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <Grid>
-            <Grid.Col span={{ base: 6, md: 6 }}>
-              <TextInput label="Shelf" placeholder="shelf" {...form.getInputProps('shelf')} />
+            <Grid.Col span={{ base: 7, md: 6 }}>
+              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
             </Grid.Col>
-            <Grid.Col span={{ base: 6, md: 6 }}>
-              <Select
-                label="Status"
-                placeholder="select status"
-                data={statusArr}
-                {...form.getInputProps('status')}
-              />
+            <Grid.Col span={{ base: 5, md: 6 }}>
+              <TextInput label="Shelf" placeholder="shelf" {...form.getInputProps('shelf')} />
             </Grid.Col>
           </Grid>
           <Grid>
-            <Grid.Col span={{ base: 5, md: 5 }}>{itemsSelect('part')}</Grid.Col>
-            <Grid.Col span={{ base: 7, md: 7 }}>{itemsSelect('issue')}</Grid.Col>
+            <Grid.Col span={{ base: 4, md: 5 }}>{itemsSelect('part')}</Grid.Col>
+            <Grid.Col span={{ base: 8, md: 7 }}>{itemsSelect('issue')}</Grid.Col>
           </Grid>
           <Textarea
             label="Detail"
@@ -127,11 +123,26 @@ function NewResult() {
               />
             </Grid.Col>
           </Grid>
+
           <Grid>
             <Grid.Col span={{ base: 7, md: 6 }}>
-              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
+              <Select
+                label="Shelf Status"
+                placeholder="select status"
+                data={statusArr}
+                {...form.getInputProps('status')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 5, md: 6 }}>
+              <Select
+                label="Issue Status"
+                placeholder="select status"
+                data={['Open', 'WIP', 'Closed']}
+                {...form.getInputProps('issue_status')}
+              />
             </Grid.Col>
           </Grid>
+
           <Grid justify="center" mt="lg" mb="lg">
             <Button
               leftSection={<IconDeviceFloppy size={16} />}
@@ -147,5 +158,3 @@ function NewResult() {
     </>
   );
 }
-
-export default NewResult;

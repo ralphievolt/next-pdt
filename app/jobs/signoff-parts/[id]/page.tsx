@@ -1,4 +1,4 @@
-import ResultForm from "@/components/so-parts-list/index"
+import ResultForm from "@/components/jobs/so-parts-list/index"
 import clientPromise from "@/lib/mongodb-conn";
 import { ObjectId } from "mongodb";
 
