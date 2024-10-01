@@ -1,16 +1,32 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { Tag, Text, useDisclosure } from '@chakra-ui/react';
-import { useAtom } from 'jotai';
+import { useActionState, useEffect, useMemo, useState } from 'react';
+import { Tag } from '@chakra-ui/react';
+import { useAtom, useAtomValue,useSetAtom } from 'jotai';
 import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table';
+import {
+  ActionIcon,
+  Box,
+  Divider,
+  Menu,
+  Modal,
+  NumberInput,
+  Paper,
+  PaperProps,
+  Pill,
+  Text,
+  Title,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 import '@mantine/dates/styles.css'; //if using mantine date picker features
 import 'mantine-react-table/styles.css';
 
-import { resultAtom } from '@/stores/';
+import { getSoPartDetails } from '@/app/jobs/signoff-parts/[id]/fetcher/soparts-details';
+import UpdateResult from '@/components/jobs/so-parts-list/update-result';
+import { rowValueAtom } from '@/stores/';
+import { soPartsAtom } from '@/stores/prop-state';
 
 export type Job = {
   shelf: string;
@@ -27,12 +43,10 @@ export type Job = {
   assort: string;
 };
 
-const SignOffTable = (props: any) => {
-  const [tableData, setTableData] = useState<Job[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [result, setResult] = useAtom(resultAtom);
-
-  const params = useParams();
+const SignOffTable = () => {
+  const setResult = useSetAtom(rowValueAtom)
+  const tableData = useAtomValue(soPartsAtom);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const columns = useMemo<MRT_ColumnDef<Job>[]>(
     () => [
@@ -81,25 +95,25 @@ const SignOffTable = (props: any) => {
         Cell: ({ cell }) => {
           if (cell.row.original.status === 'Approved')
             return (
-              <Tag size={'md'} variant="solid" bg="green.400">
+              <Box bg={'green'} c="#fff" ta="center" style={{ borderRadius: '5px' }}>
                 {cell.getValue<string>()}
-              </Tag>
+              </Box>
             );
           if (cell.row.original.status === 'Rejected')
             return (
-              <Tag size={'md'} variant="solid" bg="red.400">
+              <Box bg={'red'} c="#fff" ta="center" style={{ borderRadius: '5px' }}>
                 {cell.getValue<string>()}
-              </Tag>
+              </Box>
             );
           if (cell.row.original.status === 'Staged')
             return (
-              <Tag size={'md'} variant="solid" bg="cyan.200" color="black">
+              <Box bg={'cyan'} c="#fff" ta="center" style={{ borderRadius: '5px' }}>
                 {cell.getValue<string>()}
-              </Tag>
+              </Box>
             );
 
           return cell.getValue<string>();
-        }
+        },
       },
 
       {
@@ -124,15 +138,15 @@ const SignOffTable = (props: any) => {
         Cell: ({ cell }) => {
           if (cell.row.original.issue_status === 'Closed')
             return (
-              <Tag size={'md'} variant="solid" bg="green.400">
+              <Box bg={'green'} c="#fff" ta="center" style={{ borderRadius: '5px' }} w="50%">
                 {cell.getValue<string>()}
-              </Tag>
+              </Box>
             );
           if (cell.row.original.issue_status === 'Open')
             return (
-              <Tag size={'md'} variant="solid" bg="red.400">
+              <Box bg={'red'} c="#fff" ta="center" style={{ borderRadius: '5px' }} w="50%">
                 {cell.getValue<string>()}
-              </Tag>
+              </Box>
             );
 
           return cell.getValue<string>();
@@ -168,38 +182,43 @@ const SignOffTable = (props: any) => {
     []
   );
 
-  useEffect(() => {
-    let newArray = props.results.filter((el: any) => el.status !== 'Cancelled');
-    setTableData(newArray);
-  }, [props.results]);
-
   return (
-    <MantineReactTable
-      columns={columns}
-      data={tableData}
-      enableGrouping
-      enableColumnDragging={false}
-      initialState={{
-        density: 'xs',
-        pagination: { pageSize: 30, pageIndex: 0 },
-        columnVisibility: {
-          round: false,
-        },
-        // grouping: ["groupId"],// see type Job
-      }}
-      enableColumnOrdering
-      enableTopToolbar={false}
-      mantineTableProps={{
-        striped: true,
-      }}
-      mantineTableBodyRowProps={({ row }) => ({
-        onClick: (event) => {
-          setResult(row.original);
-          onOpen();
-        },
-      })}
-      mantinePaperProps={{ shadow: '0', withBorder: false }}
-    />
+    <>
+      <MantineReactTable
+        columns={columns}
+        data={tableData}
+        enableGrouping
+        enableColumnDragging={false}
+        initialState={{
+          density: 'xs',
+          pagination: { pageSize: 30, pageIndex: 0 },
+          columnVisibility: {
+            round: false,
+          },
+          sorting: [
+            {
+              id: 'shelf', //sort by age by default on page load
+              desc: false,
+            },
+          ],
+        }}
+        enableColumnOrdering
+        enableTopToolbar={false}
+        mantineTableProps={{
+          striped: true,
+        }}
+        mantineTableBodyRowProps={({ row }) => ({
+          onClick: (event) => {
+            setResult(row.original);
+            open();
+          },
+        })}
+        mantinePaperProps={{ shadow: '0', withBorder: false }}
+      />
+      <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
+        <UpdateResult />
+      </Modal>
+    </>
   );
 };
 

@@ -1,27 +1,25 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconEdit, IconHexagonLetterR, IconPencilPlus } from '@tabler/icons-react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useSession } from 'next-auth/react';
 import {
   ActionIcon,
-  Button,
   Divider,
   Menu,
   Modal,
   NumberInput,
   Paper,
   PaperProps,
-  Text,
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Surface } from '@/components';
 import NewResult from '@/components/jobs/so-parts-list/new-result';
-import UpdateResult from '@/components/jobs/so-parts-list/update-result';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
 import { statesAtom } from '@/stores';
+import { soPartsAtom } from '@/stores/prop-state';
 
 type PageHeaderProps = {
   title: string;
@@ -36,6 +34,8 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
   const { title, ...rest } = props;
   const [opened, { open, close }] = useDisclosure(false);
   const { data: session, status } = useSession();
+  const [soparts, setSoParts] = useAtom(soPartsAtom);
+
   const params = useParams();
   const slug = params.id;
 
@@ -58,6 +58,7 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
           'Content-Type': 'application/json',
         },
       });
+
       if (!res.ok) {
         throw new Error('Failed to update status');
       }
@@ -117,13 +118,13 @@ const SignOffPageHeader = (props: PageHeaderProps) => {
       </Surface>
       <Divider />
 
-      {/* <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
+      <Modal opened={opened} onClose={close} title="Add Result" size="xl" yOffset="1.5vh">
         <NewResult />
-      </Modal> */}
-
-      <Modal opened={opened} onClose={close} title="Update Result" size="xl" yOffset="1.5vh">
-        <UpdateResult /> 
       </Modal>
+
+      {/* <Modal opened={opened} onClose={close} title="Update Result" size="xl" yOffset="1.5vh">
+        <UpdateResult /> 
+      </Modal> */}
     </>
   );
 };

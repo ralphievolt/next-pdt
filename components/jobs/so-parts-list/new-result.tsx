@@ -3,8 +3,8 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconDeviceFloppy } from '@tabler/icons-react';
-import { useAtomValue } from 'jotai';
-import { signOut, useSession } from 'next-auth/react';
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useSession } from 'next-auth/react';
 import { Button, Grid, Select, Stack, Textarea, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import NegativeNotification from '@/components/Notifications/negative-notification';
@@ -42,7 +42,8 @@ function NewResult() {
   const issueSelected = useAtomValue(issueFormAtom);
   const statusSelection = useAtomValue(statusAtoms);
   const statusArr = statusSelection.map((item) => item.value);
-  const [loading, setLoading] = React.useState(false);
+  const [loadingState, setLoading] = React.useState(false);
+
 
   const handleSubmit = async (values: typeof form.values) => {
     if (partSelected === '' || partSelected === null) {
@@ -95,17 +96,33 @@ function NewResult() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>
-              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
-            </Grid.Col>
-            <Grid.Col span={{ base: 5, md: 6 }}>
+            <Grid.Col span={{ base: 6, md: 6 }}>
               <TextInput label="Shelf" placeholder="shelf" {...form.getInputProps('shelf')} />
+            </Grid.Col>
+            <Grid.Col span={{ base: 6, md: 6 }}>{itemsSelect('part')}</Grid.Col>
+          </Grid>
+
+          <Grid>
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <Select
+                label="Shelf Status"
+                placeholder="select status"
+                data={statusArr}
+                {...form.getInputProps('status')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 6, md:6 }}>
+              <TextInput
+                label="Responsible"
+                placeholder="responsible"
+                {...form.getInputProps('responsible')}
+              />
             </Grid.Col>
           </Grid>
 
           <Grid>
-            <Grid.Col span={{ base: 4, md: 5 }}>{itemsSelect('part')}</Grid.Col>
-            <Grid.Col span={{ base: 8, md: 7 }}>{itemsSelect('issue')}</Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>{itemsSelect('issue')}</Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>{itemsSelect('action')}</Grid.Col>
           </Grid>
           <Textarea
             label="Detail"
@@ -114,30 +131,15 @@ function NewResult() {
             {...form.getInputProps('detail')}
           />
           <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>{itemsSelect('action')}</Grid.Col>
-            <Grid.Col span={{ base: 5, md: 6 }}>
-              <TextInput
-                label="Responsible"
-                placeholder="responsible"
-                {...form.getInputProps('responsible')}
-              />
-            </Grid.Col>
-          </Grid>
-          <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>
-              <Select
-                label="Shelf Status"
-                placeholder="select status"
-                data={statusArr}
-                {...form.getInputProps('status')}
-              />
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
             </Grid.Col>
           </Grid>
           <Grid justify="center" mt="lg" mb="lg">
             <Button
               leftSection={<IconDeviceFloppy size={16} />}
               type="submit"
-              loading={loading}
+              loading={loadingState}
               loaderProps={{ type: 'bars' }}
             >
               Add Result

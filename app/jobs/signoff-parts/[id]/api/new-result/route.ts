@@ -72,7 +72,8 @@ export async function POST(request: Request, { params }: { params: { id: string 
           },
         },
       ]);
-      revalidatePath(`/jobs/signoff-parts/${id}`, 'page');
+      revalidatePath('/jobs/signoff-parts/[id]', 'page');
+
       return NextResponse.json(job, { status: 201 });
     }
 
@@ -121,8 +122,8 @@ export async function POST(request: Request, { params }: { params: { id: string 
         },
       },
     ]);
+    revalidatePath('/jobs/signoff-parts/[id]', 'page');
 
-    revalidatePath(`/jobs/signoff-parts/${id}`);
     return NextResponse.json(job, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Error in adding new result' }, { status: 500 });

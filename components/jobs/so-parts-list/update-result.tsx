@@ -3,25 +3,54 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { IconDeviceFloppy } from '@tabler/icons-react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { Button, Grid, Select, Stack, Textarea, TextInput } from '@mantine/core';
 import { isNotEmpty, useForm } from '@mantine/form';
 import NegativeNotification from '@/components/Notifications/negative-notification';
 import PositiveNotification from '@/components/Notifications/positive-notification';
 import { actionFormAtom, issueFormAtom, partFormAtom, statusAtoms } from '@/stores';
-import { itemsSelect } from './combox-items';
+import { rowValueAtom } from '@/stores/';
+import { SelectAction } from './select-action';
+import { SelectPart } from './select-part';
+import {SelectIssue} from "./select-issue"
 
-export default function UpdateResult() {
+interface RowValue {
+  action: string;
+  assort: string;
+  detail: string;
+  issue: string;
+  issue_status: string;
+  issue_status_opened: string | null;
+  key: string;
+  part: string;
+  responsible: string;
+  round: string;
+  shelf: string;
+  status: string;
+}
+
+function UpdateResult() {
+  const rowPart = useAtomValue(rowValueAtom) as RowValue;
+  const { data: session, status } = useSession();
+  const params = useParams();
+  const slug = params.id;
+  const partSelected = useAtomValue(partFormAtom);
+  const actionSelected = useAtomValue(actionFormAtom);
+  const issueSelected = useAtomValue(issueFormAtom);
+  const statusSelection = useAtomValue(statusAtoms);
+  const statusArr = statusSelection.map((item) => item.value);
+  const [loadingState, setLoading] = React.useState(false);
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      shelf: '',
-      status: '',
-      detail: '',
-      responsible: '',
-      assort: '',
-      issue_status: null,
+      shelf: rowPart.shelf,
+      part:rowPart.part,
+      status: rowPart.status,
+      detail: rowPart.detail,
+      responsible: rowPart.responsible,
+      assort: rowPart.assort,
     },
     validate: {
       shelf: isNotEmpty('Shelf cannot be empty'),
@@ -35,27 +64,18 @@ export default function UpdateResult() {
     },
   });
 
-  const { data: session, status } = useSession();
-  const params = useParams();
-  const slug = params.id;
-  const partSelected = useAtomValue(partFormAtom);
-  const actionSelected = useAtomValue(actionFormAtom);
-  const issueSelected = useAtomValue(issueFormAtom);
-  const statusSelection = useAtomValue(statusAtoms);
-  const statusArr = statusSelection.map((item) => item.value);
-  const [loading, setLoading] = React.useState(false);
-
   const handleSubmit = async (values: typeof form.values) => {
-    if (partSelected === '' || partSelected === null) {
-      NegativeNotification('Part name required!');
-      return;
-    }
 
-    if (values.status === 'Rejected' && (issueSelected === '' || actionSelected === '')) {
-      NegativeNotification('Issue and Action entry required. Please try again');
-      return;
-    }
+    console.log(rowPart)
 
+    // if (partSelected === '' || partSelected === null) {
+    //   NegativeNotification('Part name required!');
+    //   return;
+    // }
+    // if (values.status === 'Rejected' && (issueSelected === '' || actionSelected === '')) {
+    //   NegativeNotification('Issue and Action entry required. Please try again');
+    //   return;
+    // }
     const result = {
       ...values,
       shelf: values.shelf.toUpperCase(),
@@ -63,32 +83,32 @@ export default function UpdateResult() {
       issue: issueSelected,
       action: actionSelected,
     };
+    // if (session?.user?.role === 'viewer') {
+    //   NegativeNotification('Access denied');
+    //   return;
+    // }
 
-    if (session?.user?.role === 'viewer') {
-      NegativeNotification('Access denied');
-      return;
-    }
-    try {
-      setLoading(true);
-      const res = await fetch(`${slug}/api/new-result`, {
-        method: 'POST',
-        body: JSON.stringify(result),
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!res.ok) {
-        throw new Error('Failed to add new result');
-        setLoading(false);
-      }
-
-      PositiveNotification('New result added successfully! ');
-      setLoading(false);
-    } catch (error) {
-      NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
-      setLoading(false);
-    }
+    console.log({result})
+    // try {
+    //   setLoading(true);
+    //   const res = await fetch(`${slug}/api/new-result`, {
+    //     method: 'POST',
+    //     body: JSON.stringify(result),
+    //     headers: {
+    //       Accept: 'application/json, text/plain, */*',
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
+    //   if (!res.ok) {
+    //     throw new Error('Failed to add new result');
+    //     setLoading(false);
+    //   }
+    //   PositiveNotification('New result added successfully! ');
+    //   setLoading(false);
+    // } catch (error) {
+    //   NegativeNotification(error instanceof Error ? error.message : 'Add result failed!');
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -96,16 +116,32 @@ export default function UpdateResult() {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>
-              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
-            </Grid.Col>
-            <Grid.Col span={{ base: 5, md: 6 }}>
+            <Grid.Col span={{ base: 6, md: 6 }}>
               <TextInput label="Shelf" placeholder="shelf" {...form.getInputProps('shelf')} />
+            </Grid.Col>
+            <Grid.Col span={{ base: 6, md: 6 }}>{SelectPart(rowPart.part)}</Grid.Col>
+          </Grid>
+
+          <Grid>
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <Select
+                label="Shelf Status"
+                placeholder="select status"
+                data={statusArr}
+                {...form.getInputProps('status')}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <TextInput
+                label="Responsible"
+                placeholder="responsible"
+                {...form.getInputProps('responsible')}
+              />
             </Grid.Col>
           </Grid>
           <Grid>
-            <Grid.Col span={{ base: 4, md: 5 }}>{itemsSelect('part')}</Grid.Col>
-            <Grid.Col span={{ base: 8, md: 7 }}>{itemsSelect('issue')}</Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>{SelectIssue(rowPart.issue)}</Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>{SelectAction(rowPart.action)}</Grid.Col>
           </Grid>
           <Textarea
             label="Detail"
@@ -114,40 +150,15 @@ export default function UpdateResult() {
             {...form.getInputProps('detail')}
           />
           <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>{itemsSelect('action')}</Grid.Col>
-            <Grid.Col span={{ base: 5, md: 6 }}>
-              <TextInput
-                label="Responsible"
-                placeholder="responsible"
-                {...form.getInputProps('responsible')}
-              />
+            <Grid.Col span={{ base: 6, md: 6 }}>
+              <TextInput label="Assort" placeholder="assort" {...form.getInputProps('assort')} />
             </Grid.Col>
           </Grid>
-
-          <Grid>
-            <Grid.Col span={{ base: 7, md: 6 }}>
-              <Select
-                label="Shelf Status"
-                placeholder="select status"
-                data={statusArr}
-                {...form.getInputProps('status')}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 5, md: 6 }}>
-              <Select
-                label="Issue Status"
-                placeholder="select status"
-                data={['Open', 'WIP', 'Closed']}
-                {...form.getInputProps('issue_status')}
-              />
-            </Grid.Col>
-          </Grid>
-
           <Grid justify="center" mt="lg" mb="lg">
             <Button
               leftSection={<IconDeviceFloppy size={16} />}
               type="submit"
-              loading={loading}
+              loading={loadingState}
               loaderProps={{ type: 'bars' }}
             >
               Add Result
@@ -158,3 +169,5 @@ export default function UpdateResult() {
     </>
   );
 }
+
+export default UpdateResult;

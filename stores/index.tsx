@@ -1,4 +1,4 @@
-import { atom, useAtom } from 'jotai';
+import { atom } from 'jotai';
 
 export const scanloc = atom<string>('');
 export const partFormAtom = atom<string>('');
@@ -230,7 +230,7 @@ export const statusAtoms = atom([
 ]);
 
 export const jobIdAtom = atom('');
-export const resultAtom = atom();
+export const rowValueAtom = atom();
 
 export const deliveryAtoms = atom([
   {
