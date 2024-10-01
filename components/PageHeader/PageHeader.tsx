@@ -1,8 +1,7 @@
 'use client';
 
 import { Button, Divider, Menu, Modal, Paper, PaperProps, Title } from '@mantine/core';
-import { useColorScheme } from '@mantine/hooks';
-import { FilterDateMenu, Surface } from '@/components';
+import {  Surface } from '@/components';
 
 type PageHeaderProps = {
   title: string;
